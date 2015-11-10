@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+  <Properties>
+    <Property name="log_filename">fbp.log</Property>
+  </Properties>
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout>
+        <Pattern>%style{%d{HH:mm:ss}}{white,bright},%d{SSS} %magenta{[%t]} %highlight{%-5p}{TRACE=blue} %replace{%c{3.}}{com\.jju\.twb\.}{} - %m%n</Pattern>
+      </PatternLayout>
+    </Console>
+    <File name="LogFile" append="false" fileName="${log_filename}" immediateFlush="true" bufferedIO="true">
+      <PatternLayout>
+        <Pattern>%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-5p %c - %m%n</Pattern>
+      </PatternLayout>
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <Root level="all">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="LogFile"/>
+    </Root>
+  </Loggers>
+
+</Configuration>
