@@ -1,4 +1,4 @@
-package com.jjurm.projects.fbp.system;
+package net.talentum.fbp.system;
 
 import java.util.Properties;
 
