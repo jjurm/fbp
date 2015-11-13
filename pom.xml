@@ -82,6 +82,10 @@
         <updatePolicy>always</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>jjurm</id>
+      <url>http://jjurm.com/maven2</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -120,6 +124,11 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jjurm.libs</groupId>
+      <artifactId>charlcd</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
 </project>
