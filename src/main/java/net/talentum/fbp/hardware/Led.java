@@ -12,18 +12,14 @@ import com.pi4j.io.gpio.PinState;
  */
 public class Led {
 
-	private GpioController gpio;
-	private Pin pin;
 	private GpioPinDigitalOutput out;
 	
 	public Led(Pin pin, GpioController gpio) {
-		this.pin = pin;
-		this.gpio = gpio;
-		out = gpio.provisionDigitalOutputPin(pin, "LED_ACT", PinState.HIGH);
+		out = gpio.provisionDigitalOutputPin(pin, PinState.LOW);
 	}
 
 	public void on() {
-		out.toggle();
+		out.high();
 	}
 	
 	public void off() {
