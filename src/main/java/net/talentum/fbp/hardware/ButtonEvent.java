@@ -7,7 +7,7 @@ package net.talentum.fbp.hardware;
  */
 public class ButtonEvent {
 	
-	private Button button;
+	private ButtonType button;
 	
 	private ButtonState buttonState;
 	
@@ -17,14 +17,14 @@ public class ButtonEvent {
 	 * @param button
 	 * @param buttonState
 	 */
-	public ButtonEvent(Button button, ButtonState buttonState) {
+	public ButtonEvent(ButtonType button, ButtonState buttonState) {
 		this.button = button;
 		this.buttonState = buttonState;
 	}
 
 	// === Getters ===
 	
-	public Button getButton() {
+	public ButtonType getButton() {
 		return button;
 	}
 

@@ -5,7 +5,7 @@ package net.talentum.fbp.hardware;
  * 
  * @author JJurM
  */
-public enum Button {
+public enum ButtonType {
 
 	LEFT,
 	OK,

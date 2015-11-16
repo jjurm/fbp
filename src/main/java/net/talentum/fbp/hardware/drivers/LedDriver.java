@@ -18,6 +18,23 @@ public class LedDriver {
 		led_err = new Led(Pins.PIN_LED_ERR, gpio);
 	}
 	
+	public void led_on(boolean on) {
+		if(on){
+			led_on.on();
+		}else {
+			led_on.off();
+		}
+	}
+	public void blink_err(int ms){
+		
+	}
 	
+	public void blink_on(int ms){
+		
+	}
+	
+	public void blink_act(int ms){
+		
+	}
 	
 }
