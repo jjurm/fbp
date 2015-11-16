@@ -30,7 +30,7 @@ public class Main {
 	}
 	
 	public void setupGpio() {
-		
+	
 		gpio = GpioFactory.getInstance();
 		
 	}
