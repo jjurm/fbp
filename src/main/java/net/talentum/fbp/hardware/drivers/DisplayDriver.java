@@ -1,5 +1,7 @@
 package net.talentum.fbp.hardware.drivers;
 
+import com.pi4j.io.gpio.GpioController;
+
 public class DisplayDriver implements Driver{
 
 	public DisplayDriver() {
@@ -11,7 +13,7 @@ public class DisplayDriver implements Driver{
 	}
 
 	@Override
-	public void setup() {
+	public void setup(GpioController gpio) {
 		
 	}
 
