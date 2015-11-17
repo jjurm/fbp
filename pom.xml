@@ -29,6 +29,21 @@
         </configuration>
       </plugin>
 
+      <!-- Download source JARs -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>sources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Make executable JAR -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -46,7 +61,9 @@
 
       <!-- Make executable JAR with libraries -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.6</version>
         <executions>
           <execution>
             <phase>package</phase>
