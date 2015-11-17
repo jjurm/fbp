@@ -8,14 +8,15 @@ import net.talentum.fbp.hardware.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
- * DisplayContext is class that can be rendered on a display. Every
- * DisplayContext can create and spread a redraw request to notify observers (
- * {@link RedrawRequestHandler}s ) that it can provide updated content by next
- * redraw. Can also receive {@link ButtonEvent}s.
+ * This is class that is responsible for rendering the display (using method
+ * {@link #render(DisplayDriver)}). Every DisplayContext can create and spread a
+ * redraw request to notify observers ( {@link RedrawRequestHandler}s ) that it
+ * can provide updated content by next redraw. Can also receive
+ * {@link ButtonEvent}s.
  * 
  * @author JJurM
  */
-public abstract class DisplayContext implements ButtonEventHandler {
+public abstract class DisplayContextRenderer implements ButtonEventHandler, Renderer {
 
 	/**
 	 * List of registered {@link RedrawRequestHandler}s.
@@ -23,18 +24,18 @@ public abstract class DisplayContext implements ButtonEventHandler {
 	protected List<RedrawRequestHandler> handlers = new ArrayList<RedrawRequestHandler>();
 
 	/**
-	 * Reference to holder of {@link DisplayContext}, which should be called in
-	 * order to switch active {@link DisplayContext}.
+	 * Reference to holder of {@link DisplayContextRenderer}, which should be
+	 * called in order to switch active {@link DisplayContextRenderer}.
 	 */
-	public DisplayContextHolder displayContextHolder;
+	public DisplayContextRendererHolder rendererHolder;
 
 	/**
 	 * Default constructor.
 	 * 
-	 * @param displayContextHolder
+	 * @param rendererHolder
 	 */
-	public DisplayContext(DisplayContextHolder displayContextHolder) {
-		this.displayContextHolder = displayContextHolder;
+	public DisplayContextRenderer(DisplayContextRendererHolder rendererHolder) {
+		this.rendererHolder = rendererHolder;
 	}
 
 	/**
@@ -58,14 +59,5 @@ public abstract class DisplayContext implements ButtonEventHandler {
 	public void removeRedrawRequestHandler(RedrawRequestHandler handler) {
 		handlers.remove(handler);
 	}
-
-	/**
-	 * This method must be overridden by every non-abstract class extending
-	 * DisplayContext to redraw the display content.
-	 * 
-	 * @param displayDriver
-	 *            {@link DisplayDriver} used to draw on display
-	 */
-	public abstract void redraw(DisplayDriver displayDriver);
 
 }

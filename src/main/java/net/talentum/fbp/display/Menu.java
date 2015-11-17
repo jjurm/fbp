@@ -7,22 +7,22 @@ import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
- * Graphical menu usually displayed on a display; extends {@link DisplayContext}.
+ * Graphical menu usually displayed on a display; extends {@link DisplayContextRenderer}.
  * 
  * @author JJurM
  */
-public class Menu extends DisplayContext implements MenuItem {
+public class Menu extends DisplayContextRenderer implements MenuItem {
 
 	protected List<MenuItem> menuItems = new ArrayList<MenuItem>();
 	
 	protected int selected = 0;
 	
-	public Menu(DisplayContextHolder displayContext) {
+	public Menu(DisplayContextRendererHolder displayContext) {
 		super(displayContext);
 	}
 
 	@Override
-	public void redraw(DisplayDriver displayDriver) {
+	public void render(DisplayDriver displayDriver) {
 		// TODO redraw method of menu
 	}
 
