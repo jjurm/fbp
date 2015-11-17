@@ -2,7 +2,6 @@ package net.talentum.fbp.hardware.drivers;
 
 import net.talentum.fbp.hardware.Led;
 import net.talentum.fbp.hardware.Pins;
-import net.talentum.fbp.system.Utils;
 import com.pi4j.io.gpio.GpioController;
 
 public class LedDriver implements Driver{
@@ -17,44 +16,38 @@ public class LedDriver implements Driver{
 	
 	public void led_on(boolean on) {
 		if(on){
-			led_on.on();
+			led_on.out.high();
 		}else {
-			led_on.off();
+			led_on.out.low();
 		}
 	}
 	
 	public void led_err(boolean on) {
 		if(on){
-			led_err.on();
+			led_err.out.high();
 		}else {
-			led_err.off();
+			led_err.out.low();
 		}
 	}
 	
 	public void led_act(boolean on) {
 		if(on){
-			led_act.on();
+			led_act.out.high();
 		}else {
-			led_act.off();
+			led_act.out.low();
 		}
 	}
 	
 	public void blink_err(int ms){
-		led_err(true);
-		Utils.sleep(ms);
-		led_err(false);
+		led_err.out.pulse(ms);
 	}
 	
 	public void blink_on(int ms){
-		led_on(true);
-		Utils.sleep(ms);
-		led_on(false);
+		led_on.out.pulse(ms);
 	}
 	
 	public void blink_act(int ms){
-		led_act(true);
-		Utils.sleep(ms);
-		led_act(false);
+		led_act.out.pulse(ms);
 	}
 
 	@Override
@@ -66,7 +59,9 @@ public class LedDriver implements Driver{
 
 	@Override
 	public void close() {
-		
+		led_on.out.unexport();
+		led_act.out.unexport();
+		led_err.out.unexport();
 	}
 	
 }
