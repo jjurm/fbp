@@ -1,5 +1,8 @@
 package net.talentum.fbp.display;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -18,7 +21,8 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * @author JJurM
  */
 public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandler, DisplayContextRendererHolder {
-
+	private static final Logger LOG = LogManager.getLogger();
+	
 	private DisplayDriver displayDriver;
 
 	private DisplayContextRenderer activeRenderer;
@@ -51,7 +55,8 @@ public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandle
 	 */
 	@Override
 	public void switchDisplayContextRenderer(DisplayContextRenderer displayContextRenderer) {
-
+		LOG.debug("display: Switching context renderer to " + displayContextRenderer.getClass().getName());
+		
 		// deregister handler from old context
 		activeRenderer.removeRedrawRequestHandler(this);
 
@@ -67,12 +72,17 @@ public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandle
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
+		LOG.debug("display: Button event", event);
+		
 		// delegate all button events to active context
 		activeRenderer.buttonStateChanged(event);
 	}
 
 	@Override
 	public void request() {
+		LOG.trace("display: Redraw request");
+		
+		// redraw active context
 		activeRenderer.render(displayDriver);
 	}
 
