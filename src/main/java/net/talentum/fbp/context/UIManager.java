@@ -1,8 +1,9 @@
-package net.talentum.fbp.display;
+package net.talentum.fbp.context;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -10,64 +11,64 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 /**
  * Class that is responsible for rendering content on display. It does not
  * directly draw to {@link DisplayDriver}, but uses
- * {@link DisplayContextRenderer}s instead. There is always exactly one active
+ * {@link Context}s instead. There is always exactly one active
  * context renderer, which renders content on display and receives
  * {@link ButtonEvent}s delegated from this class.
  * 
- * {@link DisplayUIManager} is also {@link RedrawRequestHandler} to be able to
- * pass itself to {@link DisplayContextRenderer} as handler for the redraw
+ * {@link UIManager} is also {@link RedrawRequestHandler} to be able to
+ * pass itself to {@link Context} as handler for the redraw
  * requests.
  * 
  * @author JJurM
  */
-public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandler, DisplayContextRendererHolder {
+public class UIManager implements ButtonEventHandler, RedrawRequestHandler, ContextHolder {
 	private static final Logger LOG = LogManager.getLogger();
 	
 	private DisplayDriver displayDriver;
 
-	private DisplayContextRenderer activeRenderer;
+	private Context activeContext;
 
 	/**
 	 * Default constructor.
 	 * 
 	 * @param displayDriver
 	 */
-	public DisplayUIManager(DisplayDriver displayDriver) {
+	public UIManager(DisplayDriver displayDriver) {
 		this.displayDriver = displayDriver;
 	}
 
 	@Override
-	public DisplayContextRenderer getDisplayContextRenderer() {
-		return activeRenderer;
+	public Context getContext() {
+		return activeContext;
 	}
 
 	/**
 	 * This method performs four simple steps:
 	 * <ul>
 	 * <li>deregisters itself (as handler) from currently active
-	 * {@link DisplayContextRenderer}</li>
+	 * {@link Context}</li>
 	 * <li>makes given context active</li>
 	 * <li>registers itself as handler in newly active context</li>
 	 * <li>redraws display</li>
 	 * </ul>
 	 * 
-	 * @param displayContextRenderer
+	 * @param context
 	 */
 	@Override
-	public void switchDisplayContextRenderer(DisplayContextRenderer displayContextRenderer) {
-		LOG.debug("display: Switching context renderer to " + displayContextRenderer.getClass().getName());
+	public void switchContext(Context context) {
+		LOG.debug("display: Switching context to " + context.getClass().getName());
 		
 		// deregister handler from old context
-		activeRenderer.removeRedrawRequestHandler(this);
+		activeContext.removeRedrawRequestHandler(this);
 
 		// make given context active
-		activeRenderer = displayContextRenderer;
+		activeContext = context;
 
 		// register handler in new context
-		activeRenderer.addRedrawRequestHandler(this);
+		activeContext.addRedrawRequestHandler(this);
 
 		// redraw context
-		activeRenderer.render(displayDriver);
+		activeContext.renderContext(displayDriver);
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandle
 		LOG.debug("display: Button event", event);
 		
 		// delegate all button events to active context
-		activeRenderer.buttonStateChanged(event);
+		activeContext.buttonStateChanged(event);
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class DisplayUIManager implements ButtonEventHandler, RedrawRequestHandle
 		LOG.trace("display: Redraw request");
 		
 		// redraw active context
-		activeRenderer.render(displayDriver);
+		activeContext.renderContext(displayDriver);
 	}
 
 }
