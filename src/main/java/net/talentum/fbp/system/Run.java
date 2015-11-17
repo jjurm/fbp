@@ -9,21 +9,34 @@ import java.util.Properties;
  */
 public class Run {
 	
+	/**
+	 * The main executable method of FBP.
+	 * 
+	 * @param args command-line arguments
+	 */
 	public static void main(String[] args) {
 		
 		run(args);
 		
 	}
 	
+	/**
+	 * Elementary method to initialize the run.
+	 * 
+	 * @param args
+	 */
 	public static void run(String[] args) {
 		
 		registerShutdownHook();
 		setSystemProperties();
 		
-		Main.start(args);
+		Main.run(args);
 		
 	}
 	
+	/**
+	 * This sets system properties to predefined values.
+	 */
 	private static void setSystemProperties() {
 
 		Properties p = System.getProperties();
