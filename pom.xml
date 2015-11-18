@@ -82,8 +82,9 @@
               <mainClass>net.talentum.fbp.system.Run</mainClass>
             </manifest>
           </archive>
-          <appendAssemblyId>false</appendAssemblyId>
           <finalName>fbp</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
+          <attach>false</attach>
         </configuration>
       </plugin>
     </plugins>
