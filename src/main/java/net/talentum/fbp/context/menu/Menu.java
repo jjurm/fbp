@@ -30,13 +30,13 @@ public class Menu extends Context implements MenuItem {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param displayContext
+	 * @param contextHolder
 	 *            holder that holds this context
 	 * @param parent
 	 *            parent menu, can be {@code null}
 	 */
-	public Menu(ContextHolder displayContext, Menu parent) {
-		super(displayContext);
+	public Menu(ContextHolder contextHolder, Menu parent) {
+		super(contextHolder);
 		this.parent = parent;
 	}
 
@@ -60,7 +60,7 @@ public class Menu extends Context implements MenuItem {
 				break;
 			case OK:
 				// call selected item
-				menuItems.get(selected).call(null);
+				menuItems.get(selected).call(this);
 				break;
 			}
 		}
