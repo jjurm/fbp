@@ -40,7 +40,6 @@ public class Run {
 	private static void setSystemProperties() {
 
 		Properties p = System.getProperties();
-		p.setProperty("log4j.configurationFile", "config/log4j2.xml");
 
 	}
 	

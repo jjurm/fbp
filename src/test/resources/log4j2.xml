@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+  <Appenders>
+  </Appenders>
+
+  <Loggers>
+    <Root level="all"></Root>
+  </Loggers>
+
+</Configuration>
