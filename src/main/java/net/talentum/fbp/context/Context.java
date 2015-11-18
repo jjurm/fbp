@@ -10,10 +10,10 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
  * This class is fully responsible for actions about specific context and
- * rendering the display (using method {@link #renderContext(DisplayDriver)}). Every
- * DisplayContext can create and spread a redraw request to notify observers (
- * {@link RedrawRequestHandler}s ) that it can provide updated content by next
- * redraw. Can also receive {@link ButtonEvent}s.
+ * rendering the display (using method {@link #renderContext(DisplayDriver)}).
+ * Every DisplayContext can create and spread a redraw request to notify
+ * observers ( {@link RedrawRequestHandler}s ) that it can provide updated
+ * content by next redraw. Can also receive {@link ButtonEvent}s.
  * 
  * @author JJurM
  */
@@ -59,6 +59,15 @@ public abstract class Context implements ButtonEventHandler {
 	 */
 	public void removeRedrawRequestHandler(RedrawRequestHandler handler) {
 		handlers.remove(handler);
+	}
+
+	/**
+	 * This will create redraw request and spread it across {@code holders}.
+	 */
+	protected void populateRedrawRequest() {
+		for (RedrawRequestHandler handler : handlers) {
+			handler.request();
+		}
 	}
 
 	/**

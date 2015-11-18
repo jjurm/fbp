@@ -59,7 +59,8 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 		LOG.debug("display: Switching context to " + context.getClass().getName());
 		
 		// deregister handler from old context
-		activeContext.removeRedrawRequestHandler(this);
+		if (activeContext != null)
+			activeContext.removeRedrawRequestHandler(this);
 
 		// make given context active
 		activeContext = context;

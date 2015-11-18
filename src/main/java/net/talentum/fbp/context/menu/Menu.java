@@ -1,10 +1,11 @@
-package net.talentum.fbp.display;
+package net.talentum.fbp.context.menu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.talentum.fbp.context.Context;
 import net.talentum.fbp.context.ContextHolder;
+import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.ButtonState;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -49,7 +50,7 @@ public class Menu extends Context implements MenuItem {
 				break;
 			case OK:
 				// call selected item
-				menuItems.get(selected).call();
+				menuItems.get(selected).call(null);
 				break;
 			}
 		}
@@ -68,7 +69,7 @@ public class Menu extends Context implements MenuItem {
 	}
 
 	@Override
-	public void call() {
+	public void call(Menu menu) {
 		contextHolder.switchContext(this);
 	}
 

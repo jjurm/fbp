@@ -1,4 +1,4 @@
-package net.talentum.fbp.display;
+package net.talentum.fbp.context.menu;
 
 import net.talentum.fbp.context.ElementRenderer;
 
@@ -12,7 +12,8 @@ public interface MenuItem extends ElementRenderer {
 	/**
 	 * Call to MenuItem means that it was selected and called from a
 	 * {@link Menu}.
+	 * @param menu TODO
 	 */
-	public void call();
+	public void call(Menu menu);
 
 }
