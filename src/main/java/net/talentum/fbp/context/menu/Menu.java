@@ -17,6 +17,7 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  */
 public class Menu extends Context implements MenuItem {
 
+	protected Menu parent;
 	protected List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 	protected int selected = 0;
@@ -26,8 +27,17 @@ public class Menu extends Context implements MenuItem {
 	 */
 	protected int scrollPosition = 0;
 
-	public Menu(ContextHolder displayContext) {
+	/**
+	 * Default constructor.
+	 * 
+	 * @param displayContext
+	 *            holder that holds this context
+	 * @param parent
+	 *            parent menu, can be {@code null}
+	 */
+	public Menu(ContextHolder displayContext, Menu parent) {
 		super(displayContext);
+		this.parent = parent;
 	}
 
 	@Override
@@ -70,6 +80,7 @@ public class Menu extends Context implements MenuItem {
 
 	@Override
 	public void call(Menu menu) {
+		selected = 0;
 		contextHolder.switchContext(this);
 	}
 
