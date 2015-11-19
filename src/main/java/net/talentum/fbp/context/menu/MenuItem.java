@@ -12,7 +12,8 @@ public interface MenuItem extends ElementRenderer {
 	/**
 	 * Call to MenuItem means that it was selected and called from a
 	 * {@link Menu}.
-	 * @param menu TODO
+	 * 
+	 * @param menu
 	 */
 	public void call(Menu menu);
 

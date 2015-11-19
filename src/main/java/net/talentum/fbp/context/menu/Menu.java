@@ -3,10 +3,14 @@ package net.talentum.fbp.context.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.talentum.fbp.context.Context;
 import net.talentum.fbp.context.ContextHolder;
 import net.talentum.fbp.context.ContextMenuItem;
 import net.talentum.fbp.display.DisplaySection;
+import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.ButtonState;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -16,11 +20,14 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * 
  * @author JJurM
  */
-public class Menu extends ContextMenuItem {
+public class Menu extends ContextMenuItem implements RedrawRequestHandler {
+	private static final Logger LOG = LogManager.getLogger();
 
 	protected List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 	protected int selected = 0;
+
+	protected InlineContext activeInlineContext;
 
 	/**
 	 * Defines the lists index of first displayed {@link MenuItem}
@@ -39,7 +46,10 @@ public class Menu extends ContextMenuItem {
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
-		if (event.getButtonState() == ButtonState.PRESSED) {
+		if (activeInlineContext != null) {
+			// delegate event processing to the InlineContext
+			activeInlineContext.buttonStateChanged(event);
+		} else if (event.getButtonState() == ButtonState.PRESSED) {
 			switch (event.getButtonType()) {
 			case LEFT:
 				// move selection to the previous item
@@ -81,6 +91,47 @@ public class Menu extends ContextMenuItem {
 		selected = 0;
 		adjustScrollPosition();
 		super.call(menu);
+	}
+
+	/**
+	 * This method performs four simple steps:
+	 * <ul>
+	 * <li>deregisters itself (as handler) from currently active {@link Context}
+	 * </li>
+	 * <li>makes given context active</li>
+	 * <li>registers itself as handler in newly active context</li>
+	 * <li>redraws display</li>
+	 * </ul>
+	 * Given {@code inlineContext} can be null, in which case the actual
+	 * {@link InlineContext} will only be removed.
+	 * 
+	 * @param inlineContext
+	 */
+	void setInlineContext(InlineContext inlineContext) {
+
+		// deregister handler from old inline context (if not null)
+		if (activeInlineContext != null) {
+			LOG.debug("menu: Returning from inline context back to menu");
+			activeInlineContext.removeRedrawRequestHandler(this);
+		}
+
+		// make given context active
+		activeInlineContext = inlineContext;
+
+		// register handler in new inline context (if not null)
+		if (activeInlineContext != null) {
+			LOG.debug("menu: Switching to inline context " + activeInlineContext.getClass().getName());
+			activeInlineContext.addRedrawRequestHandler(this);
+		}
+
+		// redraw itself (menu)
+		dispatchRedrawRequest();
+	}
+
+	@Override
+	public void request() {
+		// this can be called from underlying InlineContexts
+		dispatchRedrawRequest();
 	}
 
 	@Override

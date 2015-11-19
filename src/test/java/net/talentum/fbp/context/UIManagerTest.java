@@ -55,7 +55,7 @@ public class UIManagerTest {
 	@Test
 	public void testRedrawRequest2() {
 		context.calledRenderContext = false;
-		context.populateRedrawRequest();
+		context.dispatchRedrawRequest();
 		assertTrue(context.calledRenderContext);
 	}
 
@@ -63,7 +63,7 @@ public class UIManagerTest {
 	public void testRedrawRequest3() {
 		context.calledRenderContext = false;
 		uiManager.switchContext(new TestContext(uiManager));
-		context.populateRedrawRequest();
+		context.dispatchRedrawRequest();
 		assertFalse(context.calledRenderContext);
 	}
 

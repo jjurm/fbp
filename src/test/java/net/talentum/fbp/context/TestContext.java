@@ -30,9 +30,9 @@ public class TestContext extends InfoContext {
 	}
 
 	@Override
-	public void populateRedrawRequest() {
+	public void dispatchRedrawRequest() {
 		// just to make this method public
-		super.populateRedrawRequest();
+		super.dispatchRedrawRequest();
 	}
 
 	@Override
