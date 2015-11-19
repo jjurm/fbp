@@ -1,5 +1,6 @@
 package net.talentum.fbp.context;
 
+import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.ButtonEvent;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
@@ -8,29 +9,35 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * 
  * @author JJurM
  */
-public class TestContext extends Context {
+public class TestContext extends InfoContext {
 
 	public TestContext(ContextHolder contextHolder) {
 		super(contextHolder);
 	}
 
-	boolean gotButtonEvent = false;
-	boolean calledRenderContext = false;
-	
+	public boolean gotButtonEvent = false;
+	public boolean calledRenderContext = false;
+
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
 		gotButtonEvent = true;
+		super.buttonStateChanged(event);
 	}
 
 	@Override
 	public void renderContext(DisplayDriver displayDriver) {
 		calledRenderContext = true;
 	}
-	
+
 	@Override
 	public void populateRedrawRequest() {
 		// just to make this method public
 		super.populateRedrawRequest();
 	}
-	
+
+	@Override
+	public void render(DisplaySection displaySection, DisplayDriver displayDriver) {
+		// do not render
+	}
+
 }

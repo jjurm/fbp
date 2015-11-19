@@ -1,12 +1,17 @@
 package net.talentum.fbp.system;
 
-public class Utils {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public abstract class Utils {
+	private static final Logger LOG = LogManager.getLogger();
 
 	public static void sleep(int ms) {
-		try{
+		try {
 			Thread.sleep(ms);
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch (InterruptedException e) {
+			LOG.error(e);
+			Thread.currentThread().interrupt();
 		}
 	}
 }

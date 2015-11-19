@@ -36,14 +36,14 @@ public class UIManagerTest {
 
 	@Test
 	public void testButtonEvent1() {
-		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
+		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
 		assertTrue(context.gotButtonEvent);
 	}
 
 	@Test
 	public void testButtonEvent2() {
 		uiManager.switchContext(new TestContext(uiManager));
-		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
+		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.LEFT));
 		assertFalse(context.gotButtonEvent);
 	}
 

@@ -13,9 +13,9 @@ public class BackMenuItem implements MenuItem {
 	@Override
 	public void call(Menu menu) {
 		// check if the menu has a parent
-		if (menu.parent != null)
+		if (menu.getCallerMenu() != null)
 			// switch context to the parent menu
-			menu.contextHolder.switchContext(menu.parent);
+			menu.contextHolder.switchContext(menu.getCallerMenu());
 	}
 	
 	@Override
