@@ -1,7 +1,7 @@
 package net.talentum.fbp.context;
 
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonState;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonState;
 
 /**
  * Basic {@link Context} (specifically {@link ContextMenuItem}) whose purpose is

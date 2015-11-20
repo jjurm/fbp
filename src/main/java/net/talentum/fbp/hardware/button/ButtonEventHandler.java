@@ -1,4 +1,5 @@
-package net.talentum.fbp.hardware;
+package net.talentum.fbp.hardware.button;
+
 
 /**
  * Interface providing opportunity to receive {@link ButtonEvent}s.

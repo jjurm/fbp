@@ -2,8 +2,8 @@ package net.talentum.fbp.context.menu;
 
 import net.talentum.fbp.context.Context;
 import net.talentum.fbp.display.RedrawRequestDispatcher;
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonEventHandler;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonEventHandler;
 
 /**
  * {@link InlineContext} is special type of context - has similar behavior to

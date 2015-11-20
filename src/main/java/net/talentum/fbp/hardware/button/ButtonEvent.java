@@ -1,4 +1,5 @@
-package net.talentum.fbp.hardware;
+package net.talentum.fbp.hardware.button;
+
 
 /**
  * Class representing event related to buttons.

@@ -1,8 +1,8 @@
 package net.talentum.fbp.context;
 
 import net.talentum.fbp.display.RedrawRequestDispatcher;
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonEventHandler;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**

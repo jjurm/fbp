@@ -1,4 +1,4 @@
-package net.talentum.fbp.hardware;
+package net.talentum.fbp.hardware.button;
 
 /**
  * Enumerates all three buttons on FBP.

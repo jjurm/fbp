@@ -65,7 +65,8 @@ public class Main {
 		if (shutdownActionsPerformed.compareAndSet(false, true)) {
 			
 			// these actions will be performed once during shutdown
-			
+			LOG.fatal("Shutting down gpio...");
+			gpio.shutdown();
 		}
 	}
 

@@ -11,8 +11,8 @@ import net.talentum.fbp.context.ContextHolder;
 import net.talentum.fbp.context.ContextMenuItem;
 import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.display.RedrawRequestHandler;
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonState;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**

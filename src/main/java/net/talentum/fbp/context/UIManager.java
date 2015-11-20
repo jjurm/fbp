@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.talentum.fbp.display.RedrawRequestHandler;
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonEventHandler;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
