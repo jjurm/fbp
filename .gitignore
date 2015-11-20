@@ -72,3 +72,5 @@ local.properties
 
 # === FBP ===
 *.log
+config/*.xml
+!config/*.sample.xml
