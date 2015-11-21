@@ -1,12 +1,13 @@
 package net.talentum.fbp.context;
 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonType;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.NullDisplayDriver;
 
 /**

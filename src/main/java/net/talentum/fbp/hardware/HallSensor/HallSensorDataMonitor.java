@@ -12,9 +12,7 @@ public class HallSensorDataMonitor implements HallSensorEventHandler{
 	}
 
 	@Override
-	public void hallSensorStateChanged(HallSensorEvent event) {
-		// TODO Auto-generated method stub
-		
+	public void hallSensorStateChanged(HallSensorEvent event) {		
 	}
 	
 }

@@ -6,9 +6,15 @@ import com.pi4j.io.gpio.Pin;
 
 public class Button {
 
-	private GpioPinDigitalInput in;
+	public GpioPinDigitalInput in;
+	private ButtonType type;
 	
-	public Button(Pin pin, GpioController gpio) {
+	public Button(Pin pin, GpioController gpio, ButtonType type) {
 		in = gpio.provisionDigitalInputPin(pin);
+		this.type = type;
+	}
+	
+	public ButtonType getType(){
+		return this.type;
 	}
 }

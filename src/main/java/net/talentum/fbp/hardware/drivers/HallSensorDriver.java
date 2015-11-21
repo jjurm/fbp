@@ -15,7 +15,9 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 public class HallSensorDriver implements Driver{
 	
 	private HallSensor hallSensor;
+	
 	private GpioPinDigitalInput in;
+	
 	private HallSensorDataMonitor monitor;
 	
 	public HallSensorDriver(GpioController gpio, HallSensorDataMonitor monitor) {
@@ -26,12 +28,14 @@ public class HallSensorDriver implements Driver{
 
 	private void addListener() {
 		in.addListener(new GpioPinListenerDigital() {
+			
 			 @Override
 	            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 				 	long time = System.nanoTime();
 	                HallSensorState state = event.getState() == PinState.LOW ? HallSensorState.NEAR : HallSensorState.FAR;
 	                monitor.hallSensorStateChanged(new HallSensorEvent(state, time));
 	            }
+			 
 		});
 	}
 

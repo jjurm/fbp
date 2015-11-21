@@ -1,8 +1,8 @@
 package net.talentum.fbp.context.menu;
 
 import net.talentum.fbp.display.DisplaySection;
-import net.talentum.fbp.hardware.ButtonEvent;
-import net.talentum.fbp.hardware.ButtonState;
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
