@@ -1,6 +1,7 @@
 package net.talentum.fbp.system;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -119,8 +120,14 @@ public class Main {
 			String url = "jdbc:mysql://" + config.getString("host") + "/" + config.getString("database");
 			ConnectionPool pool = new ConnectionPool("local", 0, 3, 0, url, props);
 
+			// Obtain connection
 			Connection connection = pool.getConnection();
-			LOG.info("Succesfully connected to database: " + connection.getMetaData().getDatabaseProductName());
+			// Check database name
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			url = databaseMetaData.getURL();
+			String dbName = url.substring(url.lastIndexOf("/") + 1);
+			LOG.info("Succesfully connected to database: " + dbName + " (" + databaseMetaData.getDatabaseProductName()
+					+ ")");
 
 		} catch (ConfigurationException | ClassNotFoundException | SQLException e) {
 			LOG.error("Can't create ConnectionPool, exiting program", e);
