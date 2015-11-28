@@ -75,7 +75,8 @@ public class Main {
 			// these actions will be performed once during shutdown
 
 			// terminate communication with database
-			connectionPool.releaseAsync();
+			if (connectionPool != null)
+				connectionPool.releaseAsync();
 
 			// Shutdown GPIO
 			gpio.shutdown();
@@ -114,7 +115,7 @@ public class Main {
 			// Construct ConnectionPool
 			LOG.info("system: Connecting to database");
 			String url = "jdbc:mysql://" + config.getString("host") + "/" + config.getString("database");
-			ConnectionPool pool = new ConnectionPool("local", 0, 0, 0, 0, url, props);
+			ConnectionPool pool = new ConnectionPool("local", 0, 3, 0, url, props);
 			pool.init(1);
 
 		} catch (ConfigurationException | ClassNotFoundException e) {
