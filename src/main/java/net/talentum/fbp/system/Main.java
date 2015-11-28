@@ -113,7 +113,7 @@ public class Main {
 
 			// Construct ConnectionPool
 			LOG.info("system: Connecting to database");
-			String url = "jdbc:postgresql://" + config.getString("host") + "/" + config.getString("database");
+			String url = "jdbc:mysql://" + config.getString("host") + "/" + config.getString("database");
 			ConnectionPool pool = new ConnectionPool("local", 0, 0, 0, 0, url, props);
 			pool.init(1);
 
