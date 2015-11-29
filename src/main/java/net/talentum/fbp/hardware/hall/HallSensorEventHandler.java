@@ -1,4 +1,4 @@
-package net.talentum.fbp.hardware.HallSensor;
+package net.talentum.fbp.hardware.hall;
 
 /**
  * 

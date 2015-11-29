@@ -1,10 +1,10 @@
 package net.talentum.fbp.hardware.drivers;
 
 import net.talentum.fbp.hardware.Pins;
-import net.talentum.fbp.hardware.HallSensor.HallSensor;
-import net.talentum.fbp.hardware.HallSensor.HallSensorDataMonitor;
-import net.talentum.fbp.hardware.HallSensor.HallSensorEvent;
-import net.talentum.fbp.hardware.HallSensor.HallSensorState;
+import net.talentum.fbp.hardware.hall.HallSensor;
+import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
+import net.talentum.fbp.hardware.hall.HallSensorEvent;
+import net.talentum.fbp.hardware.hall.HallSensorState;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
