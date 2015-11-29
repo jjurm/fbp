@@ -1,21 +1,16 @@
 package net.talentum.fbp.system;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
-import snaq.db.ConnectionPool;
+import net.talentum.fbp.database.DatabaseManager;
 
 /**
  * Main starting class of the program.
@@ -26,7 +21,6 @@ public class Main {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private static GpioController gpio;
-	private static ConnectionPool connectionPool;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
 
@@ -108,9 +102,11 @@ public class Main {
 			}
 
 			// terminate communication with database
-			if (connectionPool != null) {
-				LOG.info("Releasing ConnectionPool");
-				connectionPool.release();
+			LOG.info("Releasing connection pool");
+			try {
+				DatabaseManager.releasePool();
+			} catch (SQLException e) {
+				LOG.error("Could not release connection pool", e);
 			}
 
 			LOG.fatal("Terminating program");
@@ -135,35 +131,13 @@ public class Main {
 
 	static void createConnectionPool() {
 		try {
-			// Create configuration object
-			LOG.debug("system: Loading database configuration");
-			HierarchicalConfiguration config = new XMLConfiguration("config/database.xml");
 
-			// Prepare properties for ConnectionPool
-			Properties props = new Properties();
-			props.put("user", config.getString("user"));
-			props.put("password", config.getString("password"));
+			DatabaseManager.createConnectionPool();
 
-			// Load JDBC driver
-			Class.forName("org.postgresql.Driver");
-
-			// Construct ConnectionPool
-			LOG.info("system: Connecting to database");
-			String url = "jdbc:mysql://" + config.getString("host") + "/" + config.getString("database");
-			connectionPool = new ConnectionPool("local", 0, 3, 0, url, props);
-
-			// Obtain connection
-			Connection connection = connectionPool.getConnection();
-			// Check database name
-			DatabaseMetaData databaseMetaData = connection.getMetaData();
-			url = databaseMetaData.getURL();
-			String dbName = url.substring(url.lastIndexOf("/") + 1);
-			LOG.info("Succesfully connected to database: " + dbName + " (" + databaseMetaData.getDatabaseProductName()
-					+ ")");
-
-		} catch (ConfigurationException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			LOG.error("Can't create ConnectionPool, exiting program", e);
 		}
+
 	}
 
 }
