@@ -1,7 +1,5 @@
 package net.talentum.fbp.hardware.HallSensor;
 
-import net.talentum.fbp.system.Time;
-
 public class HallSensorEvent {
 
 	private HallSensorState state;
