@@ -12,7 +12,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.db.jdbc.ColumnConfig;
 import org.apache.logging.log4j.core.appender.db.jdbc.JdbcAppender;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
 
 import net.talentum.fbp.system.ConfigurationManager;
 
@@ -36,6 +41,32 @@ public class DatabaseManager {
 			return dataSource.getConnection();
 		else
 			return null;
+	}
+
+	/**
+	 * Simple singleton class used as
+	 * {@link org.apache.logging.log4j.core.appender.db.jdbc.ConnectionSource}
+	 * for Log4j2
+	 * 
+	 * @author JJurM
+	 */
+	public static class ConnectionSource implements org.apache.logging.log4j.core.appender.db.jdbc.ConnectionSource {
+
+		// single instance
+		private static final ConnectionSource INSTANCE = new ConnectionSource();
+
+		private ConnectionSource() {
+		}
+
+		public static ConnectionSource getInstance() {
+			return INSTANCE;
+		}
+
+		@Override
+		public Connection getConnection() throws SQLException {
+			return DatabaseManager.getConnection();
+		}
+
 	}
 
 	/**
@@ -78,6 +109,27 @@ public class DatabaseManager {
 		if (dataSource != null) {
 			dataSource.close();
 		}
+	}
+
+	public static void addLog4j2JDBCAppender() {
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = ctx.getConfiguration();
+		ColumnConfig[] columnConfigs = new ColumnConfig[] {
+				ColumnConfig.createColumnConfig(config, "date", null, null, "true", "false", "false"),
+				ColumnConfig.createColumnConfig(config, "thread", "%thread", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "level", "%level", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "logger", "%logger", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "message", "%message", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "throwable", "%ex{}", null, null, null, null) };
+
+		Appender jdbcAppender = JdbcAppender.createAppender("Database", "true", null, ConnectionSource.INSTANCE, "0",
+				"logs", columnConfigs);
+
+		jdbcAppender.start();
+		config.addAppender(jdbcAppender);
+		AppenderRef ref = AppenderRef.createAppenderRef("Database", null, null);
+		config.getRootLogger().addAppender(jdbcAppender, null, null);
+		ctx.updateLoggers();
 	}
 
 	/**

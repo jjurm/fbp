@@ -1,7 +1,5 @@
 package net.talentum.fbp.system;
 
-import java.util.Properties;
-
 /**
  * Class that runs the program, the only executable class in project.
  * 
@@ -39,7 +37,7 @@ public class Run {
 	 */
 	private static void setSystemProperties() {
 
-		Properties p = System.getProperties();
+		//Properties p = System.getProperties();
 
 	}
 	
