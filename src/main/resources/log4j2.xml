@@ -3,6 +3,7 @@
 
   <Properties>
     <Property name="log_filename">fbp.log</Property>
+    <Property name="database_name">fbp</Property>
   </Properties>
 
   <Appenders>
@@ -16,6 +17,15 @@
         <Pattern>%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-5p %c - %m%n</Pattern>
       </PatternLayout>
     </File>
+    <JDBC name="Database" tableName="${database_name}.logs">
+      <ConnectionFactory class="net.talentum.fbp.database.DatabaseManager" method="getConnection" />
+      <Column name="date" isEventTimestamp="true" />
+      <Column name="thread" pattern="%thread" />
+      <Column name="level" pattern="%level" />
+      <Column name="logger" pattern="%logger" />
+      <Column name="message" pattern="%message" />
+      <Column name="throwable" pattern="%ex{full}" />
+    </JDBC>
   </Appenders>
 
   <Loggers>

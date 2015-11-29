@@ -12,9 +12,20 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.db.jdbc.JdbcAppender;
 
 import net.talentum.fbp.system.ConfigurationManager;
 
+/**
+ * Class responsible for managing database connection pools set-up and shutdown,
+ * also for receiving connections.
+ * <p>
+ * Method {@link #getConnection()} of this class is used in Log4j2 configuration
+ * file as ConnectionFactory for {@link JdbcAppender}.
+ * </p>
+ * 
+ * @author JJurM
+ */
 public class DatabaseManager {
 	private static final Logger LOG = LogManager.getLogger();
 
