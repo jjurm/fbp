@@ -66,7 +66,7 @@ public class Main {
 
 		createConnectionPool();
 		
-		DatabaseManager.addLog4j2JDBCAppender();
+		DatabaseManager.addLog4j2JdbcAppender();
 		
 		setupGpio();
 		setupDevices();

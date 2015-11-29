@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
+<Configuration packages="net.talentum.fbp.logging">
 
   <Properties>
     <Property name="log_filename">fbp.log</Property>
@@ -17,12 +17,14 @@
         <Pattern>%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-5p %c - %m%n</Pattern>
       </PatternLayout>
     </File>
+    <Stack name="DatabaseStack"></Stack>
   </Appenders>
 
   <Loggers>
     <Root level="all">
       <AppenderRef ref="Console"/>
       <AppenderRef ref="LogFile"/>
+      <AppenderRef ref="DatabaseStack" />
     </Root>
     <Logger name="snaq.db.ConnectionPool" level="info">
       <RegexFilter regex=".*Getting connection.*" onMatch="DENY" onMismatch="NEUTRAL" />

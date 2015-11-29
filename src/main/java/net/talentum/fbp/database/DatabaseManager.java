@@ -16,9 +16,9 @@ import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.db.jdbc.ColumnConfig;
 import org.apache.logging.log4j.core.appender.db.jdbc.JdbcAppender;
-import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 
+import net.talentum.fbp.logging.StackAppender;
 import net.talentum.fbp.system.ConfigurationManager;
 
 /**
@@ -111,9 +111,14 @@ public class DatabaseManager {
 		}
 	}
 
-	public static void addLog4j2JDBCAppender() {
+	/**
+	 * Creates and configures {@link JdbcAppender}, then adds it to the root
+	 * logger.
+	 */
+	public static void addLog4j2JdbcAppender() {
 		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		final Configuration config = ctx.getConfiguration();
+
 		ColumnConfig[] columnConfigs = new ColumnConfig[] {
 				ColumnConfig.createColumnConfig(config, "date", null, null, "true", "false", "false"),
 				ColumnConfig.createColumnConfig(config, "thread", "%thread", null, null, null, null),
@@ -121,15 +126,14 @@ public class DatabaseManager {
 				ColumnConfig.createColumnConfig(config, "logger", "%logger", null, null, null, null),
 				ColumnConfig.createColumnConfig(config, "message", "%message", null, null, null, null),
 				ColumnConfig.createColumnConfig(config, "throwable", "%ex{}", null, null, null, null) };
-
 		Appender jdbcAppender = JdbcAppender.createAppender("Database", "true", null, ConnectionSource.INSTANCE, "0",
 				"logs", columnConfigs);
 
 		jdbcAppender.start();
 		config.addAppender(jdbcAppender);
-		AppenderRef ref = AppenderRef.createAppenderRef("Database", null, null);
-		config.getRootLogger().addAppender(jdbcAppender, null, null);
-		ctx.updateLoggers();
+
+		StackAppender stackAppender = (StackAppender) config.getAppenders().get("DatabaseStack");
+		stackAppender.setAppender(jdbcAppender);
 	}
 
 	/**
