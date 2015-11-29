@@ -32,7 +32,7 @@ public class Main {
 
 	/**
 	 * This method will catch any exception (or {@code Throwable}) thrown from
-	 * underlying methods, log it and rethrow it.
+	 * underlying methods, log it and terminate program.
 	 * 
 	 * @param args
 	 */
@@ -41,13 +41,13 @@ public class Main {
 
 			start(args);
 
-		} catch (Throwable e) {
+		} catch (StartupException | RuntimeException e) {
 
 			// always log the throwable
-			LOG.fatal(e);
+			LOG.fatal("Could not start program, immediately shutting down", e);
 
-			// rethrow the exception
-			throw e;
+			shutdown();
+
 		}
 	}
 
@@ -56,16 +56,38 @@ public class Main {
 	 * sections.
 	 * 
 	 * @param args
+	 * @throws StartupException
 	 */
-	public static void start(String args[]) {
+	public static void start(String args[]) throws StartupException {
 
 		LOG.info("Starting program...");
 
+		try {
+
+			ConfigurationManager.performChecks();
+
+		} catch (ConfigurationException e) {
+			throw new StartupException(e);
+		}
+
+		createConnectionPool();
 		setupGpio();
 		setupDevices();
-		createConnectionPool();
 
 		LOG.info("Succesfully started!");
+
+	}
+
+	/**
+	 * Will attempt to shut down the program, calling {@link #shutdownActions()}
+	 * first.
+	 */
+	public static void shutdown() {
+
+		LOG.fatal("Shutdown requested!");
+
+		shutdownActions();
+		System.exit(0);
 
 	}
 
@@ -73,20 +95,27 @@ public class Main {
 	 * Performs necessary shutdown actions and assures they will be run at most
 	 * once.
 	 */
-	public static void shutdownActions() {
+	static void shutdownActions() {
 		if (shutdownActionsPerformed.compareAndSet(false, true)) {
 			// these actions will be performed once during shutdown
 
-			LOG.fatal("Shutting down gpio...");
-			gpio.shutdown();
-
-			// terminate communication with database
-			if (connectionPool != null)
-				connectionPool.releaseAsync();
+			LOG.info("Performing shutdown actions...");
 
 			// Shutdown GPIO
-			gpio.shutdown();
+			if (gpio != null) {
+				LOG.info("Shutting down GPIO");
+				gpio.shutdown();
+			}
 
+			// terminate communication with database
+			if (connectionPool != null) {
+				LOG.info("Releasing ConnectionPool");
+				connectionPool.release();
+			}
+
+			LOG.fatal("Terminating program");
+		} else {
+			LOG.debug("Duplicately requested shutdown actions");
 		}
 	}
 
@@ -121,10 +150,10 @@ public class Main {
 			// Construct ConnectionPool
 			LOG.info("system: Connecting to database");
 			String url = "jdbc:mysql://" + config.getString("host") + "/" + config.getString("database");
-			ConnectionPool pool = new ConnectionPool("local", 0, 3, 0, url, props);
+			connectionPool = new ConnectionPool("local", 0, 3, 0, url, props);
 
 			// Obtain connection
-			Connection connection = pool.getConnection();
+			Connection connection = connectionPool.getConnection();
 			// Check database name
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 			url = databaseMetaData.getURL();
