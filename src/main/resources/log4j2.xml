@@ -23,6 +23,9 @@
       <AppenderRef ref="Console"/>
       <AppenderRef ref="LogFile"/>
     </Root>
+    <Logger name="snaq.db.ConnectionPool" level="info">
+      <RegexFilter regex=".*Getting connection.*" onMatch="DENY" onMismatch="NEUTRAL" />
+    </Logger>
   </Loggers>
 
 </Configuration>

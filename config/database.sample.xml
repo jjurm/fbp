@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- Edit and save as database.xml -->
+<database>
+	<host>localhost</host>
+	<user>user</user>
+	<password>password</password>
+	<database>database_name</database>
+</database>
