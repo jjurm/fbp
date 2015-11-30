@@ -132,7 +132,7 @@ public class DatabaseManager {
 		jdbcAppender.start();
 		config.addAppender(jdbcAppender);
 
-		StackAppender stackAppender = (StackAppender) config.getAppenders().get("DatabaseStack");
+		StackAppender stackAppender = (StackAppender) config.getAppender("DatabaseStack");
 		stackAppender.setAppender(jdbcAppender);
 	}
 

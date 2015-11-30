@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
+<Configuration packages="net.talentum.fbp.logging">
 
   <Appenders>
+    <Test name="Test"></Test>
+    <Stack name="TestStack"></Stack>
   </Appenders>
 
   <Loggers>
     <Root level="all"></Root>
+    <Logger name="net.talentum.fbp.logging">
+      <AppenderRef ref="Test" />
+      <AppenderRef ref="TestStack" />
+    </Logger>
   </Loggers>
 
 </Configuration>

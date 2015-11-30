@@ -34,9 +34,11 @@ public class StackAppender extends AbstractAppender {
 	 * Default constructor
 	 * 
 	 * @param name
+	 * @param filter
+	 * @param ignoreExceptions
 	 */
-	protected StackAppender(String name, boolean ignoreExceptions) {
-		super(name, null, null, ignoreExceptions);
+	protected StackAppender(String name, Filter filter, boolean ignoreExceptions) {
+		super(name, filter, null, ignoreExceptions);
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class StackAppender extends AbstractAppender {
 			return null;
 		}
 		final boolean ignoreExceptions = Booleans.parseBoolean(ignore, true);
-		return new StackAppender(name, ignoreExceptions);
+		return new StackAppender(name, filter, ignoreExceptions);
 	}
 
 	protected List<LogEvent> logEvents = new ArrayList<LogEvent>();
