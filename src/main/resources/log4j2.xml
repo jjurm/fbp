@@ -6,10 +6,14 @@
     <Property name="database_name">fbp</Property>
   </Properties>
 
+  <CustomLevels>
+    <CustomLevel name="DIAG" intLevel="150" />
+  </CustomLevels>
+
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout>
-        <Pattern>%style{%d{HH:mm:ss}}{white,bright},%d{SSS} %magenta{[%t]} %highlight{%-5p}{TRACE=blue} %replace{%c{3.}}{net\.tal\.}{} - %m%n</Pattern>
+        <Pattern>%style{%d{HH:mm:ss}}{white,bright},%d{SSS} %magenta{[%t]} %highlight{%-5p}{TRACE=blue, DIAG=green bright} %replace{%c{3.}}{net\.tal\.}{} - %m%n</Pattern>
       </PatternLayout>
     </Console>
     <File name="LogFile" append="false" fileName="${log_filename}" immediateFlush="true" bufferedIO="true">

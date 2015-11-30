@@ -13,6 +13,7 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
 import net.talentum.fbp.database.DatabaseManager;
+import net.talentum.fbp.logging.Levels;
 
 /**
  * Main starting class of the program.
@@ -56,7 +57,7 @@ public class Main {
 	 */
 	public static void start(String args[]) throws StartupException {
 
-		LOG.info("Starting program...");
+		LOG.log(Levels.DIAG, "Starting program...");
 
 		try {
 
@@ -72,7 +73,7 @@ public class Main {
 		setupGpio();
 		setupDevices();
 
-		LOG.info("Succesfully started!");
+		LOG.log(Levels.DIAG, "Succesfully started!");
 
 		Utils.sleep(3000);
 
@@ -84,7 +85,7 @@ public class Main {
 	 */
 	public static void shutdown() {
 
-		LOG.fatal("Shutdown requested!");
+		LOG.log(Levels.DIAG, "Shutdown requested!");
 
 		shutdownActions();
 		System.exit(0);
@@ -99,7 +100,7 @@ public class Main {
 		if (shutdownActionsPerformed.compareAndSet(false, true)) {
 			// these actions will be performed once during shutdown
 
-			LOG.info("Performing shutdown actions...");
+			LOG.log(Levels.DIAG, "Performing shutdown");
 
 			// Shutdown GPIO
 			if (gpio != null) {
@@ -122,7 +123,7 @@ public class Main {
 
 			System.out.println("Terminating program");
 		} else {
-			LOG.debug("Duplicately requested shutdown actions");
+			LOG.warn("Duplicately requested shutdown actions");
 		}
 	}
 
