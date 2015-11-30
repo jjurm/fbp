@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration packages="net.talentum.fbp.logging">
+<Configuration shutdownHook="disable" packages="net.talentum.fbp.logging">
 
   <Properties>
     <Property name="log_filename">fbp.log</Property>

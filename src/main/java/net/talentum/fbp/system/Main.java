@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -65,13 +67,14 @@ public class Main {
 		}
 
 		createConnectionPool();
-		
 		DatabaseManager.addLog4j2JdbcAppender();
-		
+
 		setupGpio();
 		setupDevices();
 
 		LOG.info("Succesfully started!");
+
+		Utils.sleep(3000);
 
 	}
 
@@ -107,12 +110,17 @@ public class Main {
 			// terminate communication with database
 			LOG.info("Releasing connection pool");
 			try {
+				DatabaseManager.removeLog4j2JdbcAppender();
 				DatabaseManager.releasePool();
 			} catch (SQLException e) {
 				LOG.error("Could not release connection pool", e);
 			}
 
-			LOG.fatal("Terminating program");
+			// shutdown log4j2
+			LOG.info("Shutting down log4j2");
+			Configurator.shutdown((LoggerContext) LogManager.getContext());
+
+			System.out.println("Terminating program");
 		} else {
 			LOG.debug("Duplicately requested shutdown actions");
 		}

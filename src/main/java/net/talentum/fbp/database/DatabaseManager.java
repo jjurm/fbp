@@ -112,8 +112,8 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Creates and configures {@link JdbcAppender}, then adds it to the root
-	 * logger.
+	 * Creates and configures {@link JdbcAppender}, then adds it to the
+	 * {@link StackAppender} named {@code "DatabaseStack"}.
 	 */
 	public static void addLog4j2JdbcAppender() {
 		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
@@ -134,6 +134,17 @@ public class DatabaseManager {
 
 		StackAppender stackAppender = (StackAppender) config.getAppender("DatabaseStack");
 		stackAppender.setAppender(jdbcAppender);
+	}
+
+	/**
+	 * Removes {@link JdbcAppender} from {@link StackAppender} named {@code "DatabaseStack"}.
+	 */
+	public static void removeLog4j2JdbcAppender() {
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = ctx.getConfiguration();
+
+		StackAppender stackAppender = (StackAppender) config.getAppender("DatabaseStack");
+		stackAppender.setAppender(null);
 	}
 
 	/**
