@@ -12,9 +12,25 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.db.jdbc.ColumnConfig;
+import org.apache.logging.log4j.core.appender.db.jdbc.JdbcAppender;
+import org.apache.logging.log4j.core.config.Configuration;
 
+import net.talentum.fbp.logging.StackAppender;
 import net.talentum.fbp.system.ConfigurationManager;
 
+/**
+ * Class responsible for managing database connection pools set-up and shutdown,
+ * also for receiving connections.
+ * <p>
+ * Method {@link #getConnection()} of this class is used in Log4j2 configuration
+ * file as ConnectionFactory for {@link JdbcAppender}.
+ * </p>
+ * 
+ * @author JJurM
+ */
 public class DatabaseManager {
 	private static final Logger LOG = LogManager.getLogger();
 
@@ -25,6 +41,32 @@ public class DatabaseManager {
 			return dataSource.getConnection();
 		else
 			return null;
+	}
+
+	/**
+	 * Simple singleton class used as
+	 * {@link org.apache.logging.log4j.core.appender.db.jdbc.ConnectionSource}
+	 * for Log4j2
+	 * 
+	 * @author JJurM
+	 */
+	public static class ConnectionSource implements org.apache.logging.log4j.core.appender.db.jdbc.ConnectionSource {
+
+		// single instance
+		private static final ConnectionSource INSTANCE = new ConnectionSource();
+
+		private ConnectionSource() {
+		}
+
+		public static ConnectionSource getInstance() {
+			return INSTANCE;
+		}
+
+		@Override
+		public Connection getConnection() throws SQLException {
+			return DatabaseManager.getConnection();
+		}
+
 	}
 
 	/**
@@ -67,6 +109,42 @@ public class DatabaseManager {
 		if (dataSource != null) {
 			dataSource.close();
 		}
+	}
+
+	/**
+	 * Creates and configures {@link JdbcAppender}, then adds it to the
+	 * {@link StackAppender} named {@code "DatabaseStack"}.
+	 */
+	public static void addLog4j2JdbcAppender() {
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = ctx.getConfiguration();
+
+		ColumnConfig[] columnConfigs = new ColumnConfig[] {
+				ColumnConfig.createColumnConfig(config, "date", null, null, "true", "false", "false"),
+				ColumnConfig.createColumnConfig(config, "thread", "%thread", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "level", "%level", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "logger", "%logger", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "message", "%message", null, null, null, null),
+				ColumnConfig.createColumnConfig(config, "throwable", "%ex{}", null, null, null, null) };
+		Appender jdbcAppender = JdbcAppender.createAppender("Database", "true", null, ConnectionSource.INSTANCE, "0",
+				"logs", columnConfigs);
+
+		jdbcAppender.start();
+		config.addAppender(jdbcAppender);
+
+		StackAppender stackAppender = (StackAppender) config.getAppender("DatabaseStack");
+		stackAppender.setAppender(jdbcAppender);
+	}
+
+	/**
+	 * Removes {@link JdbcAppender} from {@link StackAppender} named {@code "DatabaseStack"}.
+	 */
+	public static void removeLog4j2JdbcAppender() {
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = ctx.getConfiguration();
+
+		StackAppender stackAppender = (StackAppender) config.getAppender("DatabaseStack");
+		stackAppender.setAppender(null);
 	}
 
 	/**

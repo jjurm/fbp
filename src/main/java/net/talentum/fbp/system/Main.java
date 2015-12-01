@@ -6,11 +6,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
 import net.talentum.fbp.database.DatabaseManager;
+import net.talentum.fbp.logging.Levels;
 
 /**
  * Main starting class of the program.
@@ -54,7 +57,7 @@ public class Main {
 	 */
 	public static void start(String args[]) throws StartupException {
 
-		LOG.info("Starting program...");
+		LOG.log(Levels.DIAG, "Starting program...");
 
 		try {
 
@@ -65,10 +68,14 @@ public class Main {
 		}
 
 		createConnectionPool();
+		DatabaseManager.addLog4j2JdbcAppender();
+
 		setupGpio();
 		setupDevices();
 
-		LOG.info("Succesfully started!");
+		LOG.log(Levels.DIAG, "Succesfully started!");
+
+		Utils.sleep(3000);
 
 	}
 
@@ -78,7 +85,7 @@ public class Main {
 	 */
 	public static void shutdown() {
 
-		LOG.fatal("Shutdown requested!");
+		LOG.log(Levels.DIAG, "Shutdown requested!");
 
 		shutdownActions();
 		System.exit(0);
@@ -93,7 +100,7 @@ public class Main {
 		if (shutdownActionsPerformed.compareAndSet(false, true)) {
 			// these actions will be performed once during shutdown
 
-			LOG.info("Performing shutdown actions...");
+			LOG.log(Levels.DIAG, "Performing shutdown");
 
 			// Shutdown GPIO
 			if (gpio != null) {
@@ -104,14 +111,19 @@ public class Main {
 			// terminate communication with database
 			LOG.info("Releasing connection pool");
 			try {
+				DatabaseManager.removeLog4j2JdbcAppender();
 				DatabaseManager.releasePool();
 			} catch (SQLException e) {
 				LOG.error("Could not release connection pool", e);
 			}
 
-			LOG.fatal("Terminating program");
+			// shutdown log4j2
+			LOG.info("Shutting down log4j2");
+			Configurator.shutdown((LoggerContext) LogManager.getContext());
+
+			System.out.println("Terminating program");
 		} else {
-			LOG.debug("Duplicately requested shutdown actions");
+			LOG.warn("Duplicately requested shutdown actions");
 		}
 	}
 
