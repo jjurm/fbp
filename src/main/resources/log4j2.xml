@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration shutdownHook="disable" packages="net.talentum.fbp.logging">
+
+  <Properties>
+    <Property name="log_filename">fbp.log</Property>
+    <Property name="database_name">fbp</Property>
+  </Properties>
+
+  <CustomLevels>
+    <CustomLevel name="DIAG" intLevel="150" />
+  </CustomLevels>
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout>
+        <Pattern>%style{%d{HH:mm:ss}}{white,bright},%d{SSS} %magenta{[%t]} %highlight{%-4p{DEBUG=DEBG}}{TRACE=blue, DIAG=green bright} %replace{%c{3.}}{net\.tal\.}{} - %m%n</Pattern>
+      </PatternLayout>
+    </Console>
+    <File name="LogFile" append="false" fileName="${log_filename}" immediateFlush="true" bufferedIO="true">
+      <PatternLayout>
+        <Pattern>%d{yyyy/MM/dd HH:mm:ss,SSS} [%t] %-4p{DEBUG=DEBG} %c - %m%n</Pattern>
+      </PatternLayout>
+    </File>
+    <Stack name="DatabaseStack"></Stack>
+  </Appenders>
+
+  <Loggers>
+    <Root level="all">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="LogFile"/>
+      <AppenderRef ref="DatabaseStack" />
+    </Root>
+    <Logger name="snaq.db.ConnectionPool" level="info">
+      <RegexFilter regex=".*Getting connection.*" onMatch="DENY" onMismatch="NEUTRAL" />
+    </Logger>
+  </Loggers>
+
+</Configuration>
