@@ -57,7 +57,7 @@ public class Main {
 	 */
 	public static void start(String args[]) throws StartupException {
 
-		LOG.log(Levels.DIAG, "Starting program...");
+		LOG.log(Levels.DIAG, String.format("Starting program: %s %s", Run.getProjectName(), Run.getProjectVersion()));
 
 		try {
 
@@ -127,7 +127,7 @@ public class Main {
 		}
 	}
 
-	static void setupGpio() {
+	private static void setupGpio() {
 
 		LOG.info("Setting up GPIO");
 
@@ -135,13 +135,13 @@ public class Main {
 
 	}
 
-	static void setupDevices() {
+	private static void setupDevices() {
 
 		LOG.info("Setting up devices");
 
 	}
 
-	static void createConnectionPool() {
+	private static void createConnectionPool() {
 		try {
 
 			DatabaseManager.createConnectionPool();
