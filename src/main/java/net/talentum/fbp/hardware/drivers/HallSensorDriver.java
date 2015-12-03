@@ -12,6 +12,12 @@ import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
+/**
+ * Class for controlling the {@link HallSensor} and adding the interrupt-based
+ * listener to the sensor.
+ * @author padr31
+ *
+ */
 public class HallSensorDriver implements Driver{
 	
 	private HallSensor hallSensor;

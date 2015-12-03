@@ -6,6 +6,12 @@ import net.talentum.fbp.hardware.Pins;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.PinState;
 
+/**
+ * Working with the {@link Piezzo}. Setting up, turning on/off and beeping
+ * for a period of time.
+ * @author padr31
+ *
+ */
 public class PiezzoDriver implements Driver{
 
 	private Piezzo piezzo;

@@ -12,13 +12,17 @@ import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
+/**
+ * Class for working with {@link ButtonEvent}s.
+ * Adding listeners to the button pins.
+ * @author padr31
+ *
+ */
 public class ButtonDriver implements Driver{
 	
 	private Button btn_ok;
 	private Button btn_r;
 	private Button btn_l;
-	
-	private GpioController gpio;
 	
 	private UIManager uiManager;
 	

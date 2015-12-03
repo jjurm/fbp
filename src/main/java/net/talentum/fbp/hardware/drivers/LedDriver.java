@@ -4,6 +4,12 @@ import net.talentum.fbp.hardware.Led;
 import net.talentum.fbp.hardware.Pins;
 import com.pi4j.io.gpio.GpioController;
 
+/**
+ * Controlling the behavior of LEDs. Blinking,
+ * turning on, off 
+ * @author padr31
+ *
+ */
 public class LedDriver implements Driver{
 
 	private static Led led_on;
@@ -14,6 +20,11 @@ public class LedDriver implements Driver{
 		setup(gpio);
 	}
 	
+	/**
+	 * Change the state of led_on to the value of the boolean on. 
+	 * 
+	 * @param on 1 stands for on, 0 for off
+	 */
 	public void led_on(boolean on) {
 		if(on){
 			led_on.out.high();
@@ -22,6 +33,11 @@ public class LedDriver implements Driver{
 		}
 	}
 	
+	/**
+	 * Change the state of led_err to the value of the boolean on. 
+	 * 
+	 * @param on 1 stands for on, 0 for off
+	 */
 	public void led_err(boolean on) {
 		if(on){
 			led_err.out.high();
@@ -30,6 +46,11 @@ public class LedDriver implements Driver{
 		}
 	}
 	
+	/**
+	 * Change the state of led_act to the value of the boolean on. 
+	 * 
+	 * @param on 1 stands for on, 0 for off
+	 */
 	public void led_act(boolean on) {
 		if(on){
 			led_act.out.high();

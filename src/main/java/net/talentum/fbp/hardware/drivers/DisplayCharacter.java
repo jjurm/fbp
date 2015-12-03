@@ -1,5 +1,11 @@
 package net.talentum.fbp.hardware.drivers;
 
+/**
+ * Enumeration for specifying different types of possible special characters
+ * used on the display.
+ * @author padr31
+ *
+ */
 public enum DisplayCharacter {
 	
 	NOTHING(new byte[]{0,0,0,0,0,0,0,0}),
