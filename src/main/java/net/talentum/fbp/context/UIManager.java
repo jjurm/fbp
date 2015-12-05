@@ -23,6 +23,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	private static final Logger LOG = LogManager.getLogger();
 
 	private DisplayDriver displayDriver;
+	private HomeScreen homeScreen;
 
 	private Context activeContext;
 
@@ -33,6 +34,23 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	 */
 	public UIManager(DisplayDriver displayDriver) {
 		this.displayDriver = displayDriver;
+	}
+
+	/**
+	 * Creates menu hierarchy and sets created instance of {@link HomeScreen} as
+	 * first active context.
+	 */
+	public void init() {
+		constructMenuHierarchy();
+		switchContext(homeScreen);
+	}
+
+	/**
+	 * Whole menu hierarchy is defined and created in this method. Also prepares
+	 * underlying {@link Context}s.
+	 */
+	protected void constructMenuHierarchy() {
+		homeScreen = new HomeScreen(this);
 	}
 
 	@Override
