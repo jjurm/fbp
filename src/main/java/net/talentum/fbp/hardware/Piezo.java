@@ -5,11 +5,16 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
 
-public class Piezzo {
+/**
+ * A class representing the basic output of a piezo.
+ * @author padr31
+ * @deprecated Use {@link OutputDevice} instead
+ */
+public class Piezo {
 
 	public GpioPinDigitalOutput out;
 	
-	public Piezzo(Pin pin, GpioController gpio ) {
+	public Piezo(Pin pin, GpioController gpio ) {
 		out = gpio.provisionDigitalOutputPin(pin, PinState.LOW);
 	}
 }

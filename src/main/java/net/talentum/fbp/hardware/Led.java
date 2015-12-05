@@ -9,6 +9,7 @@ import com.pi4j.io.gpio.PinState;
  * Class representing one LED light.
  * 
  * @author padr
+ * @deprecated Use {@link OutputDevice} instead
  */
 public class Led {
 

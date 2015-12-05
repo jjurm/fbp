@@ -1,16 +1,22 @@
 package net.talentum.fbp.hardware.button;
 
+import net.talentum.fbp.hardware.InputDevice;
+
 import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.Pin;
 
-public class Button {
+/**
+ * An input device for button inputs. The type represents
+ * the type of the Button. Left, Right or OK.
+ * @author padr31
+ *
+ */
+public class Button extends InputDevice{
 
-	public GpioPinDigitalInput in;
 	private ButtonType type;
 	
 	public Button(Pin pin, GpioController gpio, ButtonType type) {
-		in = gpio.provisionDigitalInputPin(pin);
+		super(pin, gpio);
 		this.type = type;
 	}
 	

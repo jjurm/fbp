@@ -1,13 +1,12 @@
 package net.talentum.fbp.hardware.drivers;
 
+import net.talentum.fbp.hardware.InputDevice;
 import net.talentum.fbp.hardware.Pins;
-import net.talentum.fbp.hardware.hall.HallSensor;
 import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
 import net.talentum.fbp.hardware.hall.HallSensorEvent;
 import net.talentum.fbp.hardware.hall.HallSensorState;
 
 import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
@@ -20,10 +19,8 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
  */
 public class HallSensorDriver implements Driver{
 	
-	private HallSensor hallSensor;
-	
-	private GpioPinDigitalInput in;
-	
+	private InputDevice hallSensor;
+		
 	private HallSensorDataMonitor monitor;
 	
 	public HallSensorDriver(GpioController gpio, HallSensorDataMonitor monitor) {
@@ -33,7 +30,7 @@ public class HallSensorDriver implements Driver{
 	}
 
 	private void addListener() {
-		in.addListener(new GpioPinListenerDigital() {
+		hallSensor.getInput().addListener(new GpioPinListenerDigital() {
 			
 			 @Override
 	            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
@@ -47,12 +44,11 @@ public class HallSensorDriver implements Driver{
 
 	@Override
 	public void setup(GpioController gpio) {
-		hallSensor = new HallSensor(Pins.PIN_HALL, gpio);
-		in = hallSensor.in;
+		hallSensor = new InputDevice(Pins.PIN_HALL, gpio);
 	}
 
 	@Override
 	public void close() {
-		in.unexport();
+		hallSensor.getInput().unexport();
 	}
 }

@@ -37,7 +37,7 @@ public class ButtonDriver implements Driver{
 	}
 
 	private void addListener(Button button) {
-		button.in.addListener(new GpioPinListenerDigital(){
+		button.getInput().addListener(new GpioPinListenerDigital(){
 
 			@Override
 			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
@@ -58,9 +58,9 @@ public class ButtonDriver implements Driver{
 
 	@Override
 	public void close() {
-		btn_ok.in.unexport();
-		btn_r.in.unexport();
-		btn_l.in.unexport();
+		btn_ok.getInput().unexport();
+		btn_r.getInput().unexport();
+		btn_l.getInput().unexport();
 	}
 	
 }

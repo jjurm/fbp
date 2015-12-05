@@ -1,7 +1,8 @@
 package net.talentum.fbp.hardware.drivers;
 
-import net.talentum.fbp.hardware.Led;
+import net.talentum.fbp.hardware.OutputDevice;
 import net.talentum.fbp.hardware.Pins;
+
 import com.pi4j.io.gpio.GpioController;
 
 /**
@@ -12,9 +13,9 @@ import com.pi4j.io.gpio.GpioController;
  */
 public class LedDriver implements Driver{
 
-	private static Led led_on;
-	private static Led led_act;
-	private static Led led_err;
+	private static OutputDevice led_on;
+	private static OutputDevice led_act;
+	private static OutputDevice led_err;
 	
 	public LedDriver(GpioController gpio) {
 		setup(gpio);
@@ -27,9 +28,9 @@ public class LedDriver implements Driver{
 	 */
 	public void led_on(boolean on) {
 		if(on){
-			led_on.out.high();
+			led_on.getOutput().high();
 		}else {
-			led_on.out.low();
+			led_on.getOutput().low();
 		}
 	}
 	
@@ -40,9 +41,9 @@ public class LedDriver implements Driver{
 	 */
 	public void led_err(boolean on) {
 		if(on){
-			led_err.out.high();
+			led_err.getOutput().high();
 		}else {
-			led_err.out.low();
+			led_err.getOutput().low();
 		}
 	}
 	
@@ -53,36 +54,36 @@ public class LedDriver implements Driver{
 	 */
 	public void led_act(boolean on) {
 		if(on){
-			led_act.out.high();
+			led_act.getOutput().high();
 		}else {
-			led_act.out.low();
+			led_act.getOutput().low();
 		}
 	}
 	
 	public void blink_err(int ms){
-		led_err.out.pulse(ms);
+		led_err.getOutput().pulse(ms);
 	}
 	
 	public void blink_on(int ms){
-		led_on.out.pulse(ms);
+		led_on.getOutput().pulse(ms);
 	}
 	
 	public void blink_act(int ms){
-		led_act.out.pulse(ms);
+		led_act.getOutput().pulse(ms);
 	}
 
 	@Override
 	public void setup(GpioController gpio) {
-		led_on = new Led(Pins.PIN_LED_ON, gpio);
-		led_act = new Led(Pins.PIN_LED_ACT, gpio);
-		led_err = new Led(Pins.PIN_LED_ERR, gpio);
+		led_on = new OutputDevice(Pins.PIN_LED_ON, gpio);
+		led_act = new OutputDevice(Pins.PIN_LED_ACT, gpio);
+		led_err = new OutputDevice(Pins.PIN_LED_ERR, gpio);
 	}
 
 	@Override
 	public void close() {
-		led_on.out.unexport();
-		led_act.out.unexport();
-		led_err.out.unexport();
+		led_on.getOutput().unexport();
+		led_act.getOutput().unexport();
+		led_err.getOutput().unexport();
 	}
 	
 }
