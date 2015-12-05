@@ -3,8 +3,6 @@ package net.talentum.fbp.hardware.drivers;
 import java.util.Arrays;
 import java.util.List;
 
-import net.talentum.fbp.hardware.Pins;
-
 import com.jjurm.libs.charlcd.CharLCD;
 import com.jjurm.libs.charlcd.CharLCD.BLINKING;
 import com.jjurm.libs.charlcd.CharLCD.CURSOR;
@@ -12,6 +10,9 @@ import com.jjurm.libs.charlcd.CharLCD.CURSORMOVEMENT;
 import com.jjurm.libs.charlcd.CharLCD.DISPLAY;
 import com.jjurm.libs.charlcd.CharLCD.DOTSIZE;
 import com.pi4j.io.gpio.GpioController;
+
+import net.talentum.fbp.display.DisplaySection;
+import net.talentum.fbp.hardware.Pins;
 
 /**
  * {@link DisplayDriver} is used to controll the lcd display. It implements methods to create and use
@@ -60,11 +61,11 @@ public class DisplayDriver implements Driver {
 		lcd.moveCursor(col, row);
 	}
 
-	public void writeString(String text) {
+	public void write(String text) {
 		lcd.write(text);
 	}
 
-	public void writeInt(int i) {
+	public void write(int i) {
 		lcd.write(Integer.toString(i));
 	}
 
@@ -106,14 +107,18 @@ public class DisplayDriver implements Driver {
 		}
 	}
 
-	public void writeString(String text, int col, int row) {
+	public void write(String text, int col, int row) {
 		lcd.moveCursor(col, row);
-		this.writeString(text);
+		this.write(text);
 	}
 
-	public void writeInt(int i, int col, int row) {
+	public void write(int i, int col, int row) {
 		lcd.moveCursor(col, row);
-		this.writeInt(i);
+		this.write(i);
+	}
+	
+	public void write(String string, DisplaySection section) {
+		this.write(section.pad(string), section.getStart(), section.getRow());
 	}
 
 	public void writeSpecialChar(DisplayCharacter c, int col, int row) {
@@ -121,6 +126,10 @@ public class DisplayDriver implements Driver {
 		this.writeSpecialChar(c);
 	}
 
+	public void wline(int row, String string) {
+		lcd.wline(row, string);
+	}
+	
 	public void clearRow(int row) {
 		lcd.wline(row, "");
 	}
@@ -164,4 +173,23 @@ public class DisplayDriver implements Driver {
 		lcd.clear();
 		lcd.setDisplay(DISPLAY.OFF);
 	}
+	
+	/**
+	 * Getter method for {@code cols}.
+	 * 
+	 * @return number of columns
+	 */
+	public int getCols() {
+		return cols;
+	}
+
+	/**
+	 * Getter method for {@code rows}.
+	 * 
+	 * @return number of rows
+	 */
+	public int getRows() {
+		return rows;
+	}
+
 }

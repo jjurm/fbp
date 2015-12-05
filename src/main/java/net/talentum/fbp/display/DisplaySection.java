@@ -1,5 +1,7 @@
 package net.talentum.fbp.display;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Class representing a specific section on display.
  * 
@@ -35,7 +37,7 @@ public class DisplaySection {
 	}
 
 	// === Getters ===
-	
+
 	public int getRow() {
 		return row;
 	}
@@ -46,6 +48,21 @@ public class DisplaySection {
 
 	public int getEnd() {
 		return end;
+	}
+
+	// === Auxiliary methods ===
+
+	/**
+	 * Returns string of length {@code end-start}. If the given string is
+	 * shorter, spaces are added to right-pad the string. If the given string is
+	 * longer, substring is returned.
+	 * 
+	 * @param string
+	 * @return string of length {@code end-start}
+	 */
+	public String pad(String string) {
+		int len = end - start;
+		return StringUtils.rightPad(StringUtils.left(string, len), len);
 	}
 
 }
