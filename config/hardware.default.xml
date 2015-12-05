@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- Override values in hardware.xml -->
+<hardware>
+	<display>
+		<columns>20</columns>
+		<rows>4</rows>
+	</display>
+</hardware>

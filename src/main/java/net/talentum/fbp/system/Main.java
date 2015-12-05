@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.joda.time.DateTimeZone;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -61,12 +62,14 @@ public class Main {
 
 		try {
 
-			ConfigurationManager.performChecks();
+			ConfigurationManager.init();
+			Config.init();
 
 		} catch (ConfigurationException e) {
 			throw new StartupException(e);
 		}
 
+		setTimeZone();
 		createConnectionPool();
 		DatabaseManager.addLog4j2JdbcAppender();
 
@@ -150,6 +153,15 @@ public class Main {
 			LOG.error("Can't create ConnectionPool, exiting program", e);
 		}
 
+	}
+
+	public static void setTimeZone() {
+		try {
+			DateTimeZone timeZone = DateTimeZone.forID(Config.get().getString("fbp/system/timezone"));
+			DateTimeZone.setDefault(timeZone);
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Incorrect time zone ID, using default");
+		}
 	}
 
 }
