@@ -32,10 +32,10 @@ public abstract class Context extends RedrawRequestDispatcher implements ButtonE
 	/**
 	 * This method is responsible for rendering content on display.
 	 * 
-	 * @param displayDriver
+	 * @param display
 	 *            {@link DisplayDriver} used to draw on display
 	 * 
 	 */
-	public abstract void renderContext(DisplayDriver displayDriver);
+	public abstract void renderContext(DisplayDriver display);
 
 }

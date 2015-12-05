@@ -9,10 +9,10 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * 
  * @author JJurM
  */
-public class TestContext extends InfoContext {
+public class TestContext extends StaticInfoContext {
 
 	public TestContext(ContextHolder contextHolder) {
-		super(contextHolder);
+		super("TestContext", new String[0], contextHolder);
 	}
 
 	public boolean gotButtonEvent = false;

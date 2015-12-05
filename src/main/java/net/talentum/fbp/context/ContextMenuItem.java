@@ -11,6 +11,8 @@ import net.talentum.fbp.context.menu.MenuItem;
  */
 public abstract class ContextMenuItem extends Context implements MenuItem {
 
+	private final String name;
+
 	/**
 	 * @see #getCallerMenu()
 	 */
@@ -21,8 +23,9 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 	 * 
 	 * @param contextHolder
 	 */
-	public ContextMenuItem(ContextHolder contextHolder) {
+	public ContextMenuItem(String name, ContextHolder contextHolder) {
 		super(contextHolder);
+		this.name = name;
 	}
 
 	@Override
@@ -43,6 +46,15 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 	 */
 	public Menu getCallerMenu() {
 		return callerMenu;
+	}
+
+	/**
+	 * Returns name of this {@link ContextMenuItem}.
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
 
 }

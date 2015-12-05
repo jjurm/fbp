@@ -40,8 +40,8 @@ public class Menu extends ContextMenuItem implements RedrawRequestHandler {
 	 * @param contextHolder
 	 *            holder that holds this context
 	 */
-	public Menu(ContextHolder contextHolder) {
-		super(contextHolder);
+	public Menu(String name, ContextHolder contextHolder) {
+		super(name, contextHolder);
 	}
 
 	@Override

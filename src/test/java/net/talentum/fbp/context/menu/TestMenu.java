@@ -13,7 +13,7 @@ public class TestMenu extends Menu {
 	public boolean rendered = false;
 
 	public TestMenu(ContextHolder contextHolder) {
-		super(contextHolder);
+		super("TestMenu", contextHolder);
 	}
 
 	@Override

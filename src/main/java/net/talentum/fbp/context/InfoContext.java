@@ -17,8 +17,8 @@ public abstract class InfoContext extends ContextMenuItem {
 	 * 
 	 * @param contextHolder
 	 */
-	public InfoContext(ContextHolder contextHolder) {
-		super(contextHolder);
+	public InfoContext(String name, ContextHolder contextHolder) {
+		super(name, contextHolder);
 	}
 
 	@Override
@@ -29,11 +29,29 @@ public abstract class InfoContext extends ContextMenuItem {
 				// return to the caller menu
 				contextHolder.switchContext(callerMenu);
 				break;
+			case LEFT:
+				pressedLeft();
+			case RIGHT:
+				pressedRight();
 			default:
 				// ignore other buttons
 				break;
 			}
 		}
 	}
+
+	/**
+	 * Called when {@code LEFT} button is pressed. Children can override this
+	 * method to specify the body.
+	 */
+	protected void pressedLeft() {
+	};
+
+	/**
+	 * Called when {@code RIGHT} button is pressed. Children can override this
+	 * method to specify the body.
+	 */
+	protected void pressedRight() {
+	};
 
 }

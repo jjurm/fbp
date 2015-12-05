@@ -54,7 +54,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	 */
 	@Override
 	public void switchContext(Context context) {
-		LOG.debug("display: Switching context to " + context.getClass().getName());
+		LOG.debug(String.format("display: Switching context to  %s", context.getClass().getName()));
 
 		// deregister handler from old context
 		if (activeContext != null)
