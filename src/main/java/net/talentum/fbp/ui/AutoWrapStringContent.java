@@ -3,13 +3,11 @@ package net.talentum.fbp.ui;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import net.talentum.fbp.system.Config;
-
 /**
  * Basic implementation of {@link StringContent} that works with a static
- * string. When constructed, it splits the string to rows according to the width
- * of display (uses {@link Config#getDisplayColumns()}). Allows specifying inner
- * padding which adds spaces to the left and the right side.
+ * string. When constructed, it splits the string to rows according to the
+ * required width. Allows specifying inner padding which adds spaces to the left
+ * and the right side.
  * 
  * @author JJurM
  */
@@ -22,11 +20,11 @@ public class AutoWrapStringContent extends AbstractStringContent {
 	 * Default constructor.
 	 * 
 	 * @param text
+	 * @param width
 	 * @param padding
 	 * @see AutoWrapStringContent
 	 */
-	public AutoWrapStringContent(String text, int padding) {
-		int width = Config.getDisplayColumns();
+	public AutoWrapStringContent(String text, int width, int padding) {
 		rows = split(text, width - 2 * padding);
 
 		if (padding > 0) {
@@ -42,10 +40,11 @@ public class AutoWrapStringContent extends AbstractStringContent {
 	 * value of 0.
 	 * 
 	 * @param text
+	 * @param width
 	 * @see #AutoWrapStringContent(String, int)
 	 */
-	public AutoWrapStringContent(String text) {
-		this(text, 0);
+	public AutoWrapStringContent(String text, int width) {
+		this(text, width, 0);
 	}
 
 	/**
@@ -60,7 +59,7 @@ public class AutoWrapStringContent extends AbstractStringContent {
 	}
 
 	@Override
-	public String getRow0(int row) {
+	protected String getRow0(int row) {
 		return rows[row];
 	}
 

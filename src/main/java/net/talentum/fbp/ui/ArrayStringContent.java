@@ -24,7 +24,7 @@ public class ArrayStringContent extends AbstractStringContent {
 	}
 
 	@Override
-	public String getRow0(int row) {
+	protected String getRow0(int row) {
 		return rows[row];
 	}
 
