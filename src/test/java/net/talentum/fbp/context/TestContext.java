@@ -3,6 +3,7 @@ package net.talentum.fbp.context;
 import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
+import net.talentum.fbp.ui.ArrayStringContent;
 
 /**
  * Class extending {@link Context}, used only for test purposes.
@@ -12,7 +13,7 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 public class TestContext extends StaticInfoContext {
 
 	public TestContext(ContextHolder contextHolder) {
-		super("TestContext", new String[0], contextHolder);
+		super("TestContext", new ArrayStringContent(null), contextHolder);
 	}
 
 	public boolean gotButtonEvent = false;

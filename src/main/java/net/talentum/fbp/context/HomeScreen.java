@@ -3,6 +3,7 @@ package net.talentum.fbp.context;
 import net.talentum.fbp.context.menu.Menu;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
+import net.talentum.fbp.ui.UIManager;
 
 /**
  * {@code HomeScreen} context will be placed as parent of all menus in the menu

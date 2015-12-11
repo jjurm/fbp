@@ -9,6 +9,7 @@ import org.junit.Test;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.NullDisplayDriver;
+import net.talentum.fbp.ui.UIManager;
 
 /**
  * Tests basic logic of {@link UIManager}.

@@ -1,11 +1,11 @@
 package net.talentum.fbp.hardware.drivers;
 
-import net.talentum.fbp.context.UIManager;
 import net.talentum.fbp.hardware.Pins;
 import net.talentum.fbp.hardware.button.Button;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.button.ButtonType;
+import net.talentum.fbp.ui.UIManager;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.PinState;

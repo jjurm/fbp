@@ -1,8 +1,11 @@
-package net.talentum.fbp.context;
+package net.talentum.fbp.ui;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.talentum.fbp.context.Context;
+import net.talentum.fbp.context.ContextHolder;
+import net.talentum.fbp.context.HomeScreen;
 import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonEventHandler;

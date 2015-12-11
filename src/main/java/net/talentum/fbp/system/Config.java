@@ -5,6 +5,26 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 /**
  * Provides quick and convenient access to frequent configuration values.
  * 
+ * <p>
+ * Although many of the fields are totally constant without any possibility of
+ * change due to the hardware model, developers are encouraged to use this
+ * methods for clarity and self-explanation of code.
+ * </p>
+ * <p>
+ * <em>Example:</em> this way
+ * </p>
+ * 
+ * <pre>
+ * 	for (int i = 0; i < Config.getDisplayRows(); i++) {...}
+ * </pre>
+ * <p>
+ * should be preferred over this
+ * </p>
+ * 
+ * <pre>
+ * 	for (int i = 0; i < 4; i++) {...}
+ * </pre>
+ * 
  * @author JJurM
  */
 public final class Config {
