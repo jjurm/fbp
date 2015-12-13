@@ -30,7 +30,6 @@ public class ButtonDriver implements Driver{
 		
 		setup(gpio);
 		
-		addListeners();
 	}
 
 	private void addListener(Button button) {
@@ -48,10 +47,14 @@ public class ButtonDriver implements Driver{
 		});
 	}
 	
-	private void addListeners() {
+	public void addListeners() {
 		addListener(btn_ok);
 		addListener(btn_r);
 		addListener(btn_l);
+	}
+	
+	public void setButtonEventHandler(ButtonEventHandler buttonEventHandler) {
+		this.buttonEventHandler = buttonEventHandler;
 	}
 	
 	@Override
