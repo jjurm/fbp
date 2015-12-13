@@ -13,6 +13,7 @@ import com.pi4j.io.gpio.GpioController;
 
 import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.Pins;
+import net.talentum.fbp.system.Config;
 
 /**
  * {@link DisplayDriver} is used to controll the lcd display. It implements methods to create and use
@@ -43,8 +44,8 @@ public class DisplayDriver implements Driver {
 	
 	public DisplayDriver(GpioController gpio, boolean backlightOn) {
 		this.dotsize = DOTSIZE.DOTS_5x7;
-		this.cols = 16;
-		this.rows = 4;
+		this.cols = Config.getDisplayColumns();
+		this.rows = Config.getDisplayRows();
 
 		setup(gpio, backlightOn);
 	}
