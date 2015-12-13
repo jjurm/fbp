@@ -16,7 +16,7 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 	/**
 	 * @see #getCallerMenu()
 	 */
-	protected Menu callerMenu;
+	private Menu callerMenu;
 
 	/**
 	 * Default constructor.
@@ -30,11 +30,24 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 
 	@Override
 	public void call(Menu menu) {
-		// store reference to the parent Menu
+		enter();
+		// store reference of the parent Menu
 		callerMenu = menu;
 		// switch to this context when called
 		contextHolder.switchContext(this);
 	}
+
+	/**
+	 * This method is called just before switching actual context to this object
+	 * - when user is <em>entering</em> to the context from parent menu. Note,
+	 * that purpose of this method appeared by joining superclass
+	 * {@link Context} with interface {@link MenuItem}.
+	 * <p>
+	 * Child classes shall override it and define custom body with actions which
+	 * should be performed during the enter.
+	 * </p>
+	 */
+	protected abstract void enter();
 
 	/**
 	 * Returns {@link Menu} that last called this {@link MenuItem}. Returned

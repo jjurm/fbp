@@ -1,7 +1,9 @@
 package net.talentum.fbp.context;
 
-import net.talentum.fbp.context.menu.Menu;
+import net.talentum.fbp.context.menu.MainMenu;
 import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonState;
+import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 import net.talentum.fbp.ui.UIManager;
 
@@ -14,24 +16,34 @@ import net.talentum.fbp.ui.UIManager;
  */
 public class HomeScreen extends Context {
 
-	protected Menu menu;
+	protected MainMenu mainMenu;
 
+	/**
+	 * Default constructor.
+	 * 
+	 * @param mainMenu
+	 * @param contextHolder
+	 */
 	public HomeScreen(ContextHolder contextHolder) {
 		super(contextHolder);
 	}
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
+	
+	public void setMainMenu(MainMenu mainMenu) {
+		this.mainMenu = mainMenu;
 	}
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
-		// TODO Auto-generated method stub
+		if (event.getButtonState() == ButtonState.PRESSED && event.getButtonType() == ButtonType.OK) {
+			mainMenu.enter();
+			contextHolder.switchContext(mainMenu);
+		}
 	}
 
 	@Override
-	public void renderContext(DisplayDriver displayDriver) {
-		// TODO Auto-generated method stub
+	public void renderContext(DisplayDriver display) {
+		// title bar
+		display.wline(0, "HomeScreen");
 	}
 
 }

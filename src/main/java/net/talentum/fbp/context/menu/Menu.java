@@ -1,5 +1,8 @@
 package net.talentum.fbp.context.menu;
 
+import static net.talentum.fbp.system.Config.getDisplayColumns;
+import static net.talentum.fbp.system.Config.getDisplayRows;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +30,12 @@ public class Menu extends ContextMenuItem implements RedrawRequestHandler {
 
 	protected int selected = 0;
 
-	protected InlineContext activeInlineContext;
-
 	/**
 	 * Defines the lists index of first displayed {@link MenuItem}
 	 */
 	protected int scrollPosition = 0;
+	
+	protected InlineContext activeInlineContext;
 
 	/**
 	 * Default constructor.
@@ -86,11 +89,10 @@ public class Menu extends ContextMenuItem implements RedrawRequestHandler {
 	}
 
 	@Override
-	public void call(Menu menu) {
+	protected void enter() {
 		// reset selected item index
 		selected = 0;
 		adjustScrollPosition();
-		super.call(menu);
 	}
 
 	/**
@@ -146,6 +148,16 @@ public class Menu extends ContextMenuItem implements RedrawRequestHandler {
 		menuItems.add(menuItem);
 		return this;
 	}
+	
+	/**
+	 * Switch context to the parent menu, if any. Intended to be called from {@link BackMenuItem}.
+	 */
+	void back() {
+		// check if the menu has a parent
+		if (getCallerMenu() != null)
+			// switch context to the parent menu
+			contextHolder.switchContext(getCallerMenu());
+	}
 
 	@Override
 	public void request() {
@@ -154,13 +166,24 @@ public class Menu extends ContextMenuItem implements RedrawRequestHandler {
 	}
 
 	@Override
-	public void renderContext(DisplayDriver displayDriver) {
-		// TODO renderContext method of Menu
+	public void render(DisplaySection section, DisplayDriver display) {
+		display.write(getName(), section);
 	}
-
+	
 	@Override
-	public void render(DisplaySection displaySection, DisplayDriver displayDriver) {
-		// TODO render method of Menu
+	public void renderContext(DisplayDriver display) {
+		// render title bar
+		display.wline(0, getName());
+
+		// render remaining rows
+		MenuItem item;
+		for (int i = 0; i < getDisplayRows() - 1; i++) {
+			item = menuItems.get(scrollPosition + i);
+			if (selected == scrollPosition + i) {
+				display.write(0xBC, 0, i);
+			}
+			item.render(new DisplaySection(1 + i, 2, getDisplayColumns()), display);
+		}
 	}
 
 }

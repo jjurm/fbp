@@ -37,6 +37,11 @@ public class StaticInfoContext extends InfoContext {
 		super(name, contextHolder);
 		this.content = content;
 	}
+	
+	@Override
+	protected void enter() {
+		// do nothing
+	}
 
 	@Override
 	public void render(DisplaySection section, DisplayDriver display) {

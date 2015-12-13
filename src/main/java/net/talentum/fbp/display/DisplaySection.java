@@ -27,8 +27,11 @@ public class DisplaySection {
 	 * Default constructor.
 	 * 
 	 * @param row
+	 *            index of desired row on the display
 	 * @param start
+	 *            index of the first column (including)
 	 * @param end
+	 *            index of the last column (excluding)
 	 */
 	public DisplaySection(int row, int start, int end) {
 		this.row = row;

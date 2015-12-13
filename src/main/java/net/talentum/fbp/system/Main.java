@@ -15,6 +15,7 @@ import com.pi4j.io.gpio.GpioFactory;
 
 import net.talentum.fbp.database.DatabaseManager;
 import net.talentum.fbp.logging.Levels;
+import net.talentum.fbp.ui.UIManager;
 
 /**
  * Main starting class of the program.
@@ -25,6 +26,7 @@ public class Main {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private static GpioController gpio;
+	private static UIManager uiManager;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
 
@@ -75,6 +77,7 @@ public class Main {
 
 		setupGpio();
 		setupDevices();
+		setupUI();
 
 		LOG.log(Levels.DIAG, "Succesfully started!");
 
@@ -141,6 +144,10 @@ public class Main {
 	private static void setupDevices() {
 
 		LOG.info("Setting up devices");
+
+	}
+
+	private static void setupUI() {
 
 	}
 

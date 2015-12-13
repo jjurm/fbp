@@ -2,7 +2,8 @@ package net.talentum.fbp.ui;
 
 /**
  * Abstract implementation of {@link StringContent} that provides some basic and
- * common behavior.
+ * common behavior. Provides check, if the index of requested row is within
+ * bounds.
  * 
  * @author JJurM
  */

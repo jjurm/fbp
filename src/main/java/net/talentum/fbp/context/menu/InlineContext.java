@@ -17,15 +17,18 @@ import net.talentum.fbp.hardware.button.ButtonEventHandler;
 public abstract class InlineContext extends RedrawRequestDispatcher implements ButtonEventHandler, MenuItem {
 
 	private Menu callerMenu;
+	private boolean active = false;
 
 	@Override
 	public final void call(Menu menu) {
 		// store reference to the caller
 		callerMenu = menu;
+		// set active state
+		active = true;
+		// notify subclasses
+		called();
 		// switch menu's inlineContext to this
 		menu.setInlineContext(this);
-		// finally notify subclasses
-		called();
 	}
 
 	/**
@@ -34,12 +37,23 @@ public abstract class InlineContext extends RedrawRequestDispatcher implements B
 	 */
 	protected final void returnToMenu() {
 		callerMenu.setInlineContext(null);
+		active = false;
 	}
 
 	/**
 	 * Child classes can be notified that the {@link InlineContext} was called
-	 * by a {@link Menu}.
+	 * by a {@link Menu}, just before the {@link InlineContext} is set in the
+	 * menu.
 	 */
 	protected abstract void called();
+
+	/**
+	 * Determines active state of the {@link InlineContext}.
+	 * 
+	 * @return {@code true}, if the inline context is currently active.
+	 */
+	protected boolean isActive() {
+		return active;
+	}
 
 }
