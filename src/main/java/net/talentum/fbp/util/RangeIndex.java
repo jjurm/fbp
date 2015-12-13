@@ -16,8 +16,10 @@ public class RangeIndex {
 
 	protected AtomicInteger index;
 
-	protected IncrementOperator incrementer = new IncrementOperator();
-	protected DecrementOperator decrementer = new DecrementOperator();
+	protected IntUnaryOperator incrementer = new IncrementOperator();
+	protected IntUnaryOperator decrementer = new DecrementOperator();
+	protected IntUnaryOperator incrementerIfNotMax = new IncrementIfNotMaxOperator();
+	protected IntUnaryOperator decrementerIfNotMin = new DecrementIfNotMinOperator();
 
 	/**
 	 * Default constructor. The initial value of {@code index} is {@code min}.
@@ -79,6 +81,24 @@ public class RangeIndex {
 	}
 
 	/**
+	 * Increments index, if its value is less than {@code max}. Thread-safe.
+	 * 
+	 * @return
+	 */
+	public int incrementIfNotMax() {
+		return index.updateAndGet(incrementerIfNotMax);
+	}
+
+	/**
+	 * Decrements index, if its value is more than {@code min}. Thread-safe.
+	 * 
+	 * @return
+	 */
+	public int decrementIfNotMin() {
+		return index.updateAndGet(decrementerIfNotMin);
+	}
+
+	/**
 	 * Returns actual index.
 	 */
 	public int get() {
@@ -129,6 +149,40 @@ public class RangeIndex {
 				return operand - 1;
 			} else {
 				return max;
+			}
+		}
+	}
+
+	/**
+	 * Unary operator that will increment the value only if it's less than
+	 * {@code max}.
+	 * 
+	 * @author JJurM
+	 */
+	protected class IncrementIfNotMaxOperator implements IntUnaryOperator {
+		@Override
+		public int applyAsInt(int operand) {
+			if (operand < max) {
+				return operand + 1;
+			} else {
+				return operand;
+			}
+		}
+	}
+
+	/**
+	 * Unary operator that will decrement the value only if it's more than
+	 * {@code min}.
+	 * 
+	 * @author JJurM
+	 */
+	protected class DecrementIfNotMinOperator implements IntUnaryOperator {
+		@Override
+		public int applyAsInt(int operand) {
+			if (operand > min) {
+				return operand - 1;
+			} else {
+				return operand;
 			}
 		}
 	}
