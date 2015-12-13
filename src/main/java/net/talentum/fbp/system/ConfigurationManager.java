@@ -43,7 +43,7 @@ public class ConfigurationManager {
 	 */
 	public static void init() throws ConfigurationException {
 		HierarchicalConfiguration.setDefaultExpressionEngine(new XPathExpressionEngine());
-		
+
 		buildConfigurations();
 		buildGeneralConfig();
 	}
@@ -54,8 +54,12 @@ public class ConfigurationManager {
 		CombinedConfiguration comb;
 		File def;
 
-		key = "database";
-		configurations.put(key, new XMLConfiguration(checkFile(key, "config/database.xml", true)));
+		if (Run.isNormalRun()) {
+
+			key = "database";
+			configurations.put(key, new XMLConfiguration(checkFile(key, "config/database.xml", true)));
+
+		}
 
 		key = "fbp";
 		comb = new CombinedConfiguration(new MergeCombiner());

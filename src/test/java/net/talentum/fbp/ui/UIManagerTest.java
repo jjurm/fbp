@@ -10,6 +10,7 @@ import net.talentum.fbp.context.TestContext;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.NullDisplayDriver;
+import net.talentum.fbp.test.TestBase;
 import net.talentum.fbp.ui.UIManager;
 
 /**
@@ -17,7 +18,7 @@ import net.talentum.fbp.ui.UIManager;
  * 
  * @author JJurM
  */
-public class UIManagerTest {
+public class UIManagerTest extends TestBase {
 
 	private UIManager uiManager;
 	private TestContext context;

@@ -16,7 +16,6 @@ import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
-import net.talentum.fbp.system.Config;
 
 /**
  * Class that is responsible for rendering content on display. It does not
@@ -74,7 +73,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 					.addMenuItem(new Menu("Settings", this)
 							.addMenuItem(new BackMenuItem())
 					)
-					.addMenuItem(new StaticInfoContext("About FBP", new AutoWrapStringContent("FBP project is developed with care and enthusiasm.", Config.getDisplayColumns(), 1), this))
+					.addMenuItem(new StaticInfoContext("About FBP", new AutoWrapStringContent("FBP project is developed with care and enthusiasm.", 1), this))
 					.addMenuItem(new ShutdownMenuItem())
 					.addMenuItem(new BackMenuItem())
 		);

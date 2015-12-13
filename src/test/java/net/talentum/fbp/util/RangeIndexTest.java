@@ -9,12 +9,14 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.talentum.fbp.test.TestBase;
+
 /**
  * Tests behavior of {@link RangeIndex}.
  * 
  * @author JJurM
  */
-public class RangeIndexTest {
+public class RangeIndexTest extends TestBase {
 
 	private RangeIndex index;
 

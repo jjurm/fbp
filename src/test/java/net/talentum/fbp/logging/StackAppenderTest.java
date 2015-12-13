@@ -11,7 +11,9 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StackAppenderTest {
+import net.talentum.fbp.test.TestBase;
+
+public class StackAppenderTest extends TestBase {
 
 	private Logger LOG;
 	private TestAppender testAppender;

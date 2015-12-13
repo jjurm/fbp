@@ -11,12 +11,14 @@ import org.junit.Test;
 
 import com.github.stefanbirkner.fishbowl.Statement;
 
+import net.talentum.fbp.test.TestBase;
+
 /**
  * Tests basic implementation of various {@link StringContent}s.
  * 
  * @author JJurM
  */
-public class StringContentTest {
+public class StringContentTest extends TestBase {
 
 	@Test
 	public void testArrayStringContent() {
@@ -33,7 +35,7 @@ public class StringContentTest {
 	public void testAutoWrapStringContent() {
 		AutoWrapStringContent sc = new AutoWrapStringContent(
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-				20);
+				20, 0);
 		assertEquals(sc.getRowCount(), 8);
 		assertEquals(sc.getRow(0), "Lorem ipsum dolor");
 		assertEquals(sc.getRow(1), "sit amet,");

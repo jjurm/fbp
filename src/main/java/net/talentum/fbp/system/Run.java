@@ -15,6 +15,7 @@ public class Run {
 
 	private static String projectName;
 	private static String projectVersion;
+	private static String runType;
 
 	/**
 	 * The main executable method of FBP.
@@ -56,16 +57,15 @@ public class Run {
 
 	/**
 	 * Retrieves project properties from {@code 'project.properties'} file.
-	 *
-	 * @throws IOException
 	 */
-	private static void retrieveProjectProperties() {
+	public static void retrieveProjectProperties() {
 
 		try (InputStream in = Run.class.getResourceAsStream("/project.properties")) {
 			projectProperties.load(in);
 
 			projectName = projectProperties.getProperty("project.name");
 			projectVersion = projectProperties.getProperty("project.version");
+			runType = projectProperties.getProperty("run.type");
 		} catch (IOException e) {
 			System.out.println("Could not start, missing project.properties");
 			e.printStackTrace();
@@ -79,6 +79,10 @@ public class Run {
 
 	public static String getProjectVersion() {
 		return projectVersion;
+	}
+
+	public static boolean isNormalRun() {
+		return runType == "run";
 	}
 
 }
