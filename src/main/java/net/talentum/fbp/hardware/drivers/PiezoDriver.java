@@ -12,11 +12,11 @@ import com.pi4j.io.gpio.PinState;
  * @author padr31
  *
  */
-public class PiezzoDriver implements Driver{
+public class PiezoDriver implements Driver{
 
 	private OutputDevice piezo;
 
-	public PiezzoDriver(GpioController gpio) {
+	public PiezoDriver(GpioController gpio) {
 		setup(gpio);
 	}
 	

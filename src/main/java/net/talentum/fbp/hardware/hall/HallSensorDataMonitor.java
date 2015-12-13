@@ -7,9 +7,10 @@ import net.talentum.fbp.hardware.drivers.HallSensorDriver;
  * @author padr31
  *
  */
-public class HallSensorDataMonitor implements HallSensorEventHandler{
+public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	
 	private HallSensorDriver hallSensorDriver;
+	private Thread hallSensorDataMonitorThread;
 	
 	public HallSensorDataMonitor(HallSensorDriver hallSensorDriver) {
 		this.hallSensorDriver = hallSensorDriver;
@@ -18,6 +19,11 @@ public class HallSensorDataMonitor implements HallSensorEventHandler{
 
 	@Override
 	public void hallSensorStateChanged(HallSensorEvent event) {		
+		
+	}
+
+	@Override
+	public void run() {
 		
 	}
 	
