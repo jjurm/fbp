@@ -1,14 +1,14 @@
 package net.talentum.fbp.hardware;
 
+import com.pi4j.io.gpio.GpioController;
+
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.ButtonDriver;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
-import net.talentum.fbp.hardware.drivers.Driver;
 import net.talentum.fbp.hardware.drivers.HallSensorDriver;
 import net.talentum.fbp.hardware.drivers.LedDriver;
 import net.talentum.fbp.hardware.drivers.PiezoDriver;
 import net.talentum.fbp.hardware.hall.HallSensorEventHandler;
-import com.pi4j.io.gpio.GpioController;
 
 /**
  * This class constructs all the drivers for hardware.
@@ -55,23 +55,23 @@ public class HardwareManager {
 		
 	}
 	
-	public Driver getButtonDriver() {
+	public ButtonDriver getButtonDriver() {
 		return this.buttonDriver;
 	}
 	
-	public Driver getDisplayDriver() {
+	public DisplayDriver getDisplayDriver() {
 		return this.displayDriver;
 	}
 	
-	public Driver getHallSensorDriver() {
+	public HallSensorDriver getHallSensorDriver() {
 		return this.hallSensorDriver;
 	}
 	
-	public Driver getLedDriver() {
+	public LedDriver getLedDriver() {
 		return this.ledDriver;
 	}
 	
-	public Driver getPiezoDriver() {
+	public PiezoDriver getPiezoDriver() {
 		return this.piezoDriver;
 	}
 	

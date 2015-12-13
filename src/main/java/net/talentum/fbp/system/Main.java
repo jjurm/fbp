@@ -14,6 +14,8 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
 import net.talentum.fbp.database.DatabaseManager;
+import net.talentum.fbp.hardware.HardwareManager;
+import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
 import net.talentum.fbp.logging.Levels;
 import net.talentum.fbp.ui.UIManager;
 
@@ -26,6 +28,10 @@ public class Main {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private static GpioController gpio;
+	
+	private static HardwareManager hardwareManager;
+	private static HallSensorDataMonitor hallSensorDataMonitor;
+	
 	private static UIManager uiManager;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
@@ -146,9 +152,15 @@ public class Main {
 
 		LOG.info("Setting up devices");
 
+		hardwareManager = new HardwareManager(gpio, null, null);
+		hallSensorDataMonitor = new HallSensorDataMonitor(hardwareManager.getHallSensorDriver());
+
 	}
 
 	private static void setupUI() {
+
+		uiManager = new UIManager(hardwareManager.getDisplayDriver());
+		hardwareManager.setButtonEventHandler(uiManager);
 
 	}
 
