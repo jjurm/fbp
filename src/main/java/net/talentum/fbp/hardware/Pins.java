@@ -29,7 +29,7 @@ public class Pins {
 	public static Pin[] PINS_LCD_DB = {
 										  RaspiPin.GPIO_21,  // GPIO 05
 										  RaspiPin.GPIO_22,  // GPIO 06
-										  RaspiPin.GPIO_13,  // GPIO 13
+										  RaspiPin.GPIO_23,  // GPIO 13
 										  RaspiPin.GPIO_24   // GPIO 19
 	};
 	// @formatter:on
