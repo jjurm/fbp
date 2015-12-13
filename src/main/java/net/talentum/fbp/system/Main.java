@@ -60,7 +60,8 @@ public class Main {
 	 */
 	public static void start(String args[]) throws StartupException {
 
-		LOG.log(Levels.DIAG, String.format("Starting program: %s %s", Run.getProjectName(), Run.getProjectVersion()));
+		LOG.log(Levels.DIAG, String.format("Starting program: %s %s (%s)", Run.getProjectName(),
+				Run.getProjectVersion(), Run.projectProperties.get("run.type")));
 
 		try {
 

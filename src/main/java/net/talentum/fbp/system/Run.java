@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Class that runs the program, the only executable class in project.
  * 
@@ -82,7 +84,7 @@ public class Run {
 	}
 
 	public static boolean isNormalRun() {
-		return runType == "run";
+		return StringUtils.equals(runType, "run");
 	}
 
 }
