@@ -6,6 +6,10 @@ import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.button.ButtonType;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
@@ -25,13 +29,20 @@ public class ButtonDriver implements Driver{
 	
 	private ButtonEventHandler buttonEventHandler;
 	
+	private static final Logger LOG = LogManager.getLogger();
+	
 	public ButtonDriver(GpioController gpio, ButtonEventHandler buttonEventHandler) {
 		this.buttonEventHandler = buttonEventHandler;
 		
 		setup(gpio);
 		
 	}
-
+	
+	/**
+	 * Adding the Listener to the button and delegating the events to the Handler.
+	 * Should the buttonEventHandler be null the method logs it through the logger.
+	 * @param button
+	 */
 	private void addListener(Button button) {
 		button.getInput().addListener(new GpioPinListenerDigital(){
 
@@ -40,8 +51,11 @@ public class ButtonDriver implements Driver{
 				ButtonState state = event.getState() == PinState.LOW ? ButtonState.PRESSED : ButtonState.RELEASED;
 				ButtonType type = button.getType();
 				
-				if(buttonEventHandler != null) 
+				if(buttonEventHandler != null) {
 					buttonEventHandler.buttonStateChanged(new ButtonEvent(type, state));
+				} else {
+					LOG.debug("ButtonDriver: eventHandler was null");
+				}
 			}
 			
 		});

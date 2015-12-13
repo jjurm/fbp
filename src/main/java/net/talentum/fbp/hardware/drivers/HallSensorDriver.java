@@ -1,8 +1,10 @@
 package net.talentum.fbp.hardware.drivers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.talentum.fbp.hardware.InputDevice;
 import net.talentum.fbp.hardware.Pins;
-import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
 import net.talentum.fbp.hardware.hall.HallSensorEvent;
 import net.talentum.fbp.hardware.hall.HallSensorEventHandler;
 import net.talentum.fbp.hardware.hall.HallSensorState;
@@ -24,11 +26,18 @@ public class HallSensorDriver implements Driver{
 		
 	private HallSensorEventHandler monitor;
 	
+	private static final Logger LOG = LogManager.getLogger();
+	
 	public HallSensorDriver(GpioController gpio, HallSensorEventHandler monitor) {
 		this.monitor = monitor;
 		setup(gpio);
 	}
-
+	
+	/**
+	 * Adding the Listener to the button and delegating the events to the Handler.
+	 * Should the hallSensorEventHandler be null the method logs it through the logger.
+	 * @param button
+	 */
 	public void addListener() {
 		hallSensor.getInput().addListener(new GpioPinListenerDigital() {
 			
@@ -36,8 +45,11 @@ public class HallSensorDriver implements Driver{
 	            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 				 	long time = System.nanoTime();
 	                HallSensorState state = event.getState() == PinState.LOW ? HallSensorState.NEAR : HallSensorState.FAR;
-	                if(monitor != null)
+	                if(monitor != null) {
 	                	monitor.hallSensorStateChanged(new HallSensorEvent(state, time));
+	                } else {
+	    				LOG.debug("ButtonDriver: eventHandler was null");	
+	                }
 	            }
 			 
 		});
