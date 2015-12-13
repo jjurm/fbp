@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -28,10 +29,10 @@ public class Main {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private static GpioController gpio;
-	
+
 	private static HardwareManager hardwareManager;
 	private static HallSensorDataMonitor hallSensorDataMonitor;
-	
+
 	private static UIManager uiManager;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
@@ -67,7 +68,7 @@ public class Main {
 	public static void start(String args[]) throws StartupException {
 
 		LOG.log(Levels.DIAG, String.format("Starting program: %s %s (%s)", Run.getProjectName(),
-				Run.getProjectVersion(), Run.projectProperties.get("run.type")));
+				Run.getProjectVersion(), Run.projectProperties.getProperty("run.type")));
 
 		try {
 
@@ -88,7 +89,13 @@ public class Main {
 
 		LOG.log(Levels.DIAG, "Succesfully started!");
 
-		Utils.sleep(3000);
+		if (StringUtils.equals(Run.projectProperties.getProperty("run.type"), "run")) {
+			// if normal run, sleep forever
+			infiniteLoop();
+		} else {
+			// only simulate running
+			Utils.sleep(3000);
+		}
 
 	}
 
@@ -114,6 +121,11 @@ public class Main {
 			// these actions will be performed once during shutdown
 
 			LOG.log(Levels.DIAG, "Performing shutdown");
+
+			// Shutdown drivers
+			if (hardwareManager != null) {
+				hardwareManager.close();
+			}
 
 			// Shutdown GPIO
 			if (gpio != null) {
@@ -173,6 +185,16 @@ public class Main {
 			LOG.error("Can't create ConnectionPool, exiting program", e);
 		}
 
+	}
+
+	/**
+	 * This is intended to be called from non-daemon {@code main} thread, the
+	 * one thread to prevent application from exiting.
+	 */
+	private static void infiniteLoop() {
+		while (true) {
+			Utils.sleep(10000);
+		}
 	}
 
 	public static void setTimeZone() {
