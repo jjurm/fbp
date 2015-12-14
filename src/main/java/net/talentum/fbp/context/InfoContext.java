@@ -38,7 +38,7 @@ public abstract class InfoContext extends ContextMenuItem {
 			switch (event.getButtonType()) {
 			case OK:
 				// return to the caller menu
-				contextHolder.switchContext(getCallerMenu());
+				back();
 				break;
 			case LEFT:
 				pressedLeft();

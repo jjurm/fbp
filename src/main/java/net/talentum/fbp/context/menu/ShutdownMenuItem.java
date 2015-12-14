@@ -12,7 +12,7 @@ public class ShutdownMenuItem implements MenuItem {
 	}
 
 	@Override
-	public void call(Menu menu) {
+	public void call(AbstractMenu menu) {
 		Main.shutdown();
 	}
 

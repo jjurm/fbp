@@ -21,7 +21,7 @@ import net.talentum.fbp.test.TestBase;
 import net.talentum.fbp.ui.UIManager;
 
 /**
- * Tests basic logic of {@link Menu}.
+ * Tests basic logic of {@link BasicMenu}.
  * 
  * @author JJurM
  */
@@ -38,8 +38,9 @@ public class MenuTest extends TestBase {
 		uiManager = new UIManager(new NullDisplayDriver());
 		testContext = new TestContext(uiManager);
 		testInlineContext = new TestInlineContext();
-		menu1 = new TestMenu(uiManager);
-		menu2 = new TestMenu(uiManager);
+
+		menu1 = BasicMenu.Builder.create(TestMenu::new, null, uiManager).build();
+		menu2 = BasicMenu.Builder.create(TestMenu::new, null, uiManager).build();
 
 		menu1.menuItems.add(new TestMenuItem());
 		menu1.menuItems.add(menu2);
@@ -53,6 +54,7 @@ public class MenuTest extends TestBase {
 		menu2.menuItems.add(new BackMenuItem());
 
 		uiManager.switchContext(menu1);
+		menu1.enter();
 	}
 
 	private boolean called(MenuItem menuItem) {
@@ -61,10 +63,10 @@ public class MenuTest extends TestBase {
 
 	@Test
 	public void testObjectReferences() {
-		assertNotNull(menu1.contextHolder);
-		assertNotNull(menu1.contextHolder.getContext());
-		assertNotNull(menu2.contextHolder);
-		assertNotNull(menu2.contextHolder.getContext());
+		assertNotNull(menu1.getContextHolder());
+		assertNotNull(menu1.getContextHolder().getContext());
+		assertNotNull(menu2.getContextHolder());
+		assertNotNull(menu2.getContextHolder().getContext());
 		assertNull(menu2.getCallerMenu());
 	}
 
@@ -74,10 +76,10 @@ public class MenuTest extends TestBase {
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
 		assertTrue(called(menu1.menuItems.get(0)));
-		assertThat(menu1.selected, is(0));
+		assertThat(menu1.selected.get(), is(0));
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
-		assertThat(menu1.selected, is(1));
+		assertThat(menu1.selected.get(), is(1));
 		assertSame(uiManager.getContext(), menu1);
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
@@ -85,14 +87,14 @@ public class MenuTest extends TestBase {
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
-		assertThat(menu2.selected, is(2));
+		assertThat(menu2.selected.get(), is(2));
 		assertThat(menu2.scrollPosition, is(0));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
-		assertThat(menu2.selected, is(3));
+		assertThat(menu2.selected.get(), is(3));
 		assertThat(menu2.scrollPosition, is(1));
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.LEFT));
-		assertThat(menu2.selected, is(2));
+		assertThat(menu2.selected.get(), is(2));
 		assertThat(menu2.scrollPosition, is(1));
 		assertFalse(called(menu2.menuItems.get(2)));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
@@ -103,30 +105,30 @@ public class MenuTest extends TestBase {
 		assertThat(menu2.scrollPosition, is(2));
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
-		assertThat(menu2.selected, is(0));
+		assertThat(menu2.selected.get(), is(0));
 		assertThat(menu2.scrollPosition, is(0));
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.LEFT));
-		assertThat(menu2.selected, is(4));
+		assertThat(menu2.selected.get(), is(4));
 		assertThat(menu2.scrollPosition, is(2));
 
 		assertSame(uiManager.getContext(), menu2);
-		assertThat(menu2.menuItems.get(menu2.selected), IsInstanceOf.instanceOf(BackMenuItem.class));
+		assertThat(menu2.menuItems.get(menu2.selected.get()), IsInstanceOf.instanceOf(BackMenuItem.class));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
 		assertSame(uiManager.getContext(), menu1);
 
-		assertThat(menu1.selected, is(1));
+		assertThat(menu1.selected.get(), is(1));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
 		assertSame(uiManager.getContext(), menu1);
-		assertThat(menu1.selected, is(2));
+		assertThat(menu1.selected.get(), is(2));
 	}
 
 	@Test
 	public void testContextBehavior1() {
-		menu1.selected = 3;
+		menu1.selected.set(3);
 		menu1.adjustScrollPosition();
-		assertThat(menu1.menuItems.get(menu1.selected), IsInstanceOf.instanceOf(TestContext.class));
+		assertThat(menu1.menuItems.get(menu1.selected.get()), IsInstanceOf.instanceOf(TestContext.class));
 		assertNull(testContext.getCallerMenu());
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
@@ -143,16 +145,16 @@ public class MenuTest extends TestBase {
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.OK));
 		assertSame(uiManager.getContext(), menu1);
-		assertThat(menu1.selected, is(3));
+		assertThat(menu1.selected.get(), is(3));
 		assertThat(menu1.scrollPosition, is(1));
 	}
 
 	@Test
 	public void testInlineContext() {
-		menu1.selected = 4;
+		menu1.selected.set(4);
 		menu1.adjustScrollPosition();
-		assertThat(menu1.menuItems.get(menu1.selected), IsInstanceOf.instanceOf(TestInlineContext.class));
-		assertSame(menu1.menuItems.get(menu1.selected), testInlineContext);
+		assertThat(menu1.menuItems.get(menu1.selected.get()), IsInstanceOf.instanceOf(TestInlineContext.class));
+		assertSame(menu1.menuItems.get(menu1.selected.get()), testInlineContext);
 		assertNull(menu1.activeInlineContext);
 		assertTrue(menu1.rendered);
 
@@ -173,7 +175,7 @@ public class MenuTest extends TestBase {
 
 		uiManager.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT));
 		assertThat(testInlineContext.value, is(2));
-		assertNotSame(menu1.menuItems.get(menu1.selected), testInlineContext);
+		assertNotSame(menu1.menuItems.get(menu1.selected.get()), testInlineContext);
 
 		testInlineContext.rendered = false;
 		testInlineContext.dispatchRedrawRequest();

@@ -10,11 +10,11 @@ import net.talentum.fbp.context.ElementRenderer;
 public interface MenuItem extends ElementRenderer {
 
 	/**
-	 * Call to MenuItem means that it was selected and called from a
-	 * {@link Menu}.
+	 * Call to {@link MenuItem#call(AbstractMenu)} method means that it was
+	 * selected and called from a parent menu.
 	 * 
 	 * @param menu
 	 */
-	public void call(Menu menu);
+	public void call(AbstractMenu menu);
 
 }

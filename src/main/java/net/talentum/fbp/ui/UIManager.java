@@ -10,7 +10,7 @@ import net.talentum.fbp.context.LogBrowser;
 import net.talentum.fbp.context.StaticInfoContext;
 import net.talentum.fbp.context.menu.BackMenuItem;
 import net.talentum.fbp.context.menu.MainMenu;
-import net.talentum.fbp.context.menu.Menu;
+import net.talentum.fbp.context.menu.BasicMenu;
 import net.talentum.fbp.context.menu.ShutdownMenuItem;
 import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.button.ButtonEvent;
@@ -64,18 +64,23 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 		// @formatter:off
 		homeScreen = new HomeScreen(this);
 		homeScreen.setMainMenu(
-				new MainMenu(homeScreen, this)
-					.addMenuItem(new Menu("Logs", this)
-							.addMenuItem(logBrowser.new LogLevelSelection())
-							.addMenuItem(logBrowser)
-							.addMenuItem(new BackMenuItem())
-					)
-					.addMenuItem(new Menu("Settings", this)
-							.addMenuItem(new BackMenuItem())
-					)
-					.addMenuItem(new StaticInfoContext("About FBP", new AutoWrapStringContent("FBP project is developed with care and enthusiasm.", 1), this))
-					.addMenuItem(new ShutdownMenuItem())
-					.addMenuItem(new BackMenuItem())
+				BasicMenu.Builder.create(MainMenu.getConstructor(homeScreen), "Main menu", this)
+				.item(
+						BasicMenu.Builder.create("Logs", this)
+						.item(logBrowser.new LogLevelSelection())
+						.item(logBrowser)
+						.item(new BackMenuItem())
+						.build()
+				)
+				.item(
+						BasicMenu.Builder.create("Settings", this)
+						.item(new BackMenuItem())
+						.build()
+				)
+				.item(new StaticInfoContext("About FBP", new AutoWrapStringContent("FBP project is developed with care and enthusiasm.", 1), this))
+				.item(new ShutdownMenuItem())
+				.item(new BackMenuItem())
+				.build()
 		);
 		// @formatter:on
 	}

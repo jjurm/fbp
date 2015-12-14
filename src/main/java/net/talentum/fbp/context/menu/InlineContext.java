@@ -9,18 +9,18 @@ import net.talentum.fbp.hardware.button.ButtonEventHandler;
  * {@link InlineContext} is special type of context - has similar behavior to
  * {@link Context}. However, it's not responsible for rendering content of the
  * entire display, only a section. The {@link InlineContext} is designed to be
- * registered as a {@link MenuItem} of a {@link Menu}.
+ * registered as a {@link MenuItem} of a menu.
  * 
  * @author JJurM
  * @see Context
  */
 public abstract class InlineContext extends RedrawRequestDispatcher implements ButtonEventHandler, MenuItem {
 
-	private Menu callerMenu;
+	private AbstractMenu callerMenu;
 	private boolean active = false;
 
 	@Override
-	public final void call(Menu menu) {
+	public final void call(AbstractMenu menu) {
 		// store reference to the caller
 		callerMenu = menu;
 		// set active state
@@ -42,8 +42,7 @@ public abstract class InlineContext extends RedrawRequestDispatcher implements B
 
 	/**
 	 * Child classes can be notified that the {@link InlineContext} was called
-	 * by a {@link Menu}, just before the {@link InlineContext} is set in the
-	 * menu.
+	 * by a menu, just before the {@link InlineContext} is set in the menu.
 	 */
 	protected abstract void called();
 

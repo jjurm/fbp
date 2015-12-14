@@ -1,6 +1,11 @@
 package net.talentum.fbp.context;
 
-import net.talentum.fbp.context.menu.Menu;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.talentum.fbp.context.menu.AbstractMenu;
+import net.talentum.fbp.context.menu.BackMenuItem;
+import net.talentum.fbp.context.menu.BasicMenu;
 import net.talentum.fbp.context.menu.MenuItem;
 
 /**
@@ -10,13 +15,14 @@ import net.talentum.fbp.context.menu.MenuItem;
  * @author JJurM
  */
 public abstract class ContextMenuItem extends Context implements MenuItem {
+	private static final Logger LOG = LogManager.getLogger();
 
 	private final String name;
 
 	/**
 	 * @see #getCallerMenu()
 	 */
-	private Menu callerMenu;
+	private AbstractMenu callerMenu;
 
 	/**
 	 * Default constructor.
@@ -29,7 +35,7 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 	}
 
 	@Override
-	public void call(Menu menu) {
+	public void call(AbstractMenu menu) {
 		enter();
 		// store reference of the parent Menu
 		callerMenu = menu;
@@ -50,14 +56,28 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 	protected abstract void enter();
 
 	/**
-	 * Returns {@link Menu} that last called this {@link MenuItem}. Returned
-	 * object can be considered as temporary parent since the last call.
-	 * However, note, that {@link ContextMenuItem} may be called by different
-	 * {@link Menu}s each time.
+	 * Switch context to the parent menu, if any. Intended to be called for
+	 * example from {@link BackMenuItem}.
+	 */
+	protected void back() {
+		// check if the menu has a parent
+		if (getCallerMenu() != null) {
+			// switch context to the parent menu
+			contextHolder.switchContext(getCallerMenu());
+		} else {
+			LOG.debug("Back method called, but no caller menu is stored");
+		}
+	}
+
+	/**
+	 * Returns {@link AbstractMenu} that last called this {@link MenuItem}.
+	 * Returned object can be considered as temporary parent since the last
+	 * call. However, note that {@link ContextMenuItem} may be called by
+	 * different {@link BasicMenu}s each time.
 	 * 
 	 * @return
 	 */
-	public Menu getCallerMenu() {
+	public AbstractMenu getCallerMenu() {
 		return callerMenu;
 	}
 

@@ -18,7 +18,7 @@ public abstract class Context extends RedrawRequestDispatcher implements ButtonE
 	 * Reference to holder of {@link Context}, which should be called in order
 	 * to switch active {@link Context}.
 	 */
-	public ContextHolder contextHolder;
+	protected ContextHolder contextHolder;
 
 	/**
 	 * Default constructor.

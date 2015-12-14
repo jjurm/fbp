@@ -13,7 +13,7 @@ public class TestMenuItem implements MenuItem {
 	protected boolean called = false;
 
 	@Override
-	public void call(Menu menu) {
+	public void call(AbstractMenu menu) {
 		called = true;
 	}
 

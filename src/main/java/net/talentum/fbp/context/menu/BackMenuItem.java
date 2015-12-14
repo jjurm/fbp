@@ -11,10 +11,10 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 public class BackMenuItem implements MenuItem {
 
 	@Override
-	public void call(Menu menu) {
+	public void call(AbstractMenu menu) {
 		menu.back();
 	}
-	
+
 	@Override
 	public void render(DisplaySection section, DisplayDriver display) {
 		display.write("Back", section);

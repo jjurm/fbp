@@ -11,16 +11,17 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 import net.talentum.fbp.util.RangeIndex;
 
 /**
- * Specific inline context designed to help create inline selections in
- * {@link Menu}. It is given list of {@link Option}s, over which should it
- * cycle. Options are mapped to strings, that are rendered.
+ * Specific inline context designed to help create inline selections in a menu.
+ * It is given list of {@link Option}s, over which should it cycle. Options are
+ * mapped to strings, that are rendered.
  * <p>
  * Offers abstract method {@link #changed(Object)}, that is called whenever the
  * index has changed.
  * </p>
  * 
  * @author JJurM
- * @param <T> The type of values 
+ * @param <T>
+ *            The type of values
  * @see #SelectionInlineContext(Map, boolean)
  */
 public abstract class SelectionInlineContext<T> extends InlineContext {
