@@ -108,6 +108,7 @@ public class Main {
 		LOG.debug("Starting UI");
 		
 		uiManager = new UIManager(hardwareManager.getDisplayDriver());
+		uiManager.init();
 		hardwareManager.setButtonEventHandler(uiManager);
 
 		LOG.log(Levels.DIAG, "Succesfully started!");
