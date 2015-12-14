@@ -38,7 +38,7 @@ public class Main {
 	private static HardwareManager hardwareManager;
 	private static HallSensorDataMonitor hallSensorDataMonitor;
 
-	private static UIManager uiManager;
+	public static UIManager uiManager;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
 

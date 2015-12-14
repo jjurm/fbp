@@ -142,12 +142,12 @@ public abstract class AbstractMenu extends ContextMenuItem implements RedrawRequ
 			case LEFT:
 				// move selection to the previous item
 				selected.decrement();
-				adjustScrollPosition();
+				changedSelected();
 				break;
 			case RIGHT:
 				// move selection to the next item
 				selected.increment();
-				adjustScrollPosition();
+				changedSelected();
 				break;
 			case OK:
 				// call selected item
@@ -155,6 +155,11 @@ public abstract class AbstractMenu extends ContextMenuItem implements RedrawRequ
 				break;
 			}
 		}
+	}
+	
+	protected void changedSelected() {
+		adjustScrollPosition();
+		LOG.trace(String.format("menu: Changed item to %s", menuItems.get(selected.get()).getClass().getName()));
 	}
 
 	@Override

@@ -10,6 +10,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonState;
+import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.system.Main;
 
 /**
@@ -45,6 +48,50 @@ public class Commander {
 		commands.put("close", (args, br, pw) -> {
 			throw new StreamCloseRequest();
 		});
+
+		// home
+		commands.put("home", (args, br, pw) -> Main.uiManager.goHome());
+
+		// button
+		Command button = new CommandGroup() {
+			{
+				commands.put("l", new CommandGroup() {
+					{
+						Command down = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.LEFT, ButtonState.PRESSED));
+						Command up = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.LEFT, ButtonState.RELEASED));
+						commands.put("", down);
+						commands.put("d", down);
+						commands.put("u", up);
+					}
+				});
+				commands.put("ok", new CommandGroup() {
+					{
+						Command down = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.OK, ButtonState.PRESSED));
+						Command up = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.OK, ButtonState.RELEASED));
+						commands.put("", down);
+						commands.put("d", down);
+						commands.put("u", up);
+					}
+				});
+				commands.put("r", new CommandGroup() {
+					{
+						Command down = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT, ButtonState.PRESSED));
+						Command up = (args, br, pw) -> Main.uiManager
+								.buttonStateChanged(new ButtonEvent(ButtonType.RIGHT, ButtonState.RELEASED));
+						commands.put("", down);
+						commands.put("d", down);
+						commands.put("u", up);
+					}
+				});
+			}
+		};
+		commands.put("button", button);
+		commands.put("btn", button);
 	}
 
 	/**

@@ -122,7 +122,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
-		LOG.debug("display: Button event", event);
+		LOG.trace(String.format("display: Button event [%s] [%s]", event.getButtonType(), event.getButtonState()), event);
 
 		// delegate all button events to active context
 		activeContext.buttonStateChanged(event);
@@ -134,6 +134,13 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 
 		// redraw active context
 		activeContext.renderContext(displayDriver);
+	}
+	
+	/**
+	 * Simply returns home.
+	 */
+	public void goHome() {
+		switchContext(homeScreen);
 	}
 
 }
