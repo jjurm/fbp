@@ -163,7 +163,7 @@ public abstract class AbstractMenu extends ContextMenuItem implements RedrawRequ
 	}
 
 	@Override
-	public void request() {
+	public void handleRedrawRequest() {
 		// this can be called from underlying InlineContexts
 		dispatchRedrawRequest();
 	}

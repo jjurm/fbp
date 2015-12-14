@@ -44,7 +44,7 @@ public abstract class RedrawRequestDispatcher {
 	 */
 	protected void dispatchRedrawRequest() {
 		for (RedrawRequestHandler handler : handlers) {
-			handler.request();
+			handler.handleRedrawRequest();
 		}
 	}
 

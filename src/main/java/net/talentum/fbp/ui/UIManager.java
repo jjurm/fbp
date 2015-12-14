@@ -129,7 +129,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	}
 
 	@Override
-	public void request() {
+	public void handleRedrawRequest() {
 		LOG.trace("display: Redraw request");
 
 		// redraw active context

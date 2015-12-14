@@ -15,6 +15,6 @@ public interface RedrawRequestHandler {
 	 * {@link Context} uses this method for notification of possibility of
 	 * updated content.
 	 */
-	public void request();
+	public void handleRedrawRequest();
 
 }
