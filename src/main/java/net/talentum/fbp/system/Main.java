@@ -18,6 +18,8 @@ import net.talentum.fbp.database.DatabaseManager;
 import net.talentum.fbp.hardware.HardwareManager;
 import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
 import net.talentum.fbp.logging.Levels;
+import net.talentum.fbp.system.control.Commander;
+import net.talentum.fbp.system.control.ConsoleReader;
 import net.talentum.fbp.ui.UIManager;
 
 /**
@@ -28,6 +30,9 @@ import net.talentum.fbp.ui.UIManager;
 public class Main {
 	private static final Logger LOG = LogManager.getLogger();
 
+	private static Commander commander;
+	private static ConsoleReader consoleReader;
+	
 	private static GpioController gpio;
 
 	private static HardwareManager hardwareManager;
@@ -79,13 +84,31 @@ public class Main {
 			throw new StartupException(e);
 		}
 
+		// elementary setup
 		setTimeZone();
 		createConnectionPool();
 		DatabaseManager.addLog4j2JdbcAppender();
+		
+		commander = new Commander();
+		consoleReader = new ConsoleReader(commander);
+		consoleReader.start();
 
-		setupGpio();
-		setupDevices();
-		setupUI();
+		// GPIO
+		LOG.debug("Setting up GPIO");
+
+		gpio = GpioFactory.getInstance();
+
+		// Devices
+		LOG.debug("Setting up devices");
+
+		hardwareManager = new HardwareManager(gpio, null, null);
+		hallSensorDataMonitor = new HallSensorDataMonitor(hardwareManager.getHallSensorDriver());
+
+		// UI
+		LOG.debug("Starting UI");
+		
+		uiManager = new UIManager(hardwareManager.getDisplayDriver());
+		hardwareManager.setButtonEventHandler(uiManager);
 
 		LOG.log(Levels.DIAG, "Succesfully started!");
 
@@ -96,19 +119,6 @@ public class Main {
 			// only simulate running
 			Utils.sleep(3000);
 		}
-
-	}
-
-	/**
-	 * Will attempt to shut down the program, calling {@link #shutdownActions()}
-	 * first.
-	 */
-	public static void shutdown() {
-
-		LOG.log(Levels.DIAG, "Shutdown requested!");
-
-		shutdownActions();
-		System.exit(0);
 
 	}
 
@@ -152,27 +162,16 @@ public class Main {
 		}
 	}
 
-	private static void setupGpio() {
+	/**
+	 * Will attempt to shut down the program, calling {@link #shutdownActions()}
+	 * first.
+	 */
+	public static void shutdown() {
 
-		LOG.info("Setting up GPIO");
+		LOG.log(Levels.DIAG, "Shutdown requested!");
 
-		gpio = GpioFactory.getInstance();
-
-	}
-
-	private static void setupDevices() {
-
-		LOG.info("Setting up devices");
-
-		hardwareManager = new HardwareManager(gpio, null, null);
-		hallSensorDataMonitor = new HallSensorDataMonitor(hardwareManager.getHallSensorDriver());
-
-	}
-
-	private static void setupUI() {
-
-		uiManager = new UIManager(hardwareManager.getDisplayDriver());
-		hardwareManager.setButtonEventHandler(uiManager);
+		shutdownActions();
+		System.exit(0);
 
 	}
 
