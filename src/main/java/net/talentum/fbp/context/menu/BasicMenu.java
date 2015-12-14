@@ -30,25 +30,6 @@ public class BasicMenu extends AbstractMenu {
 		this.menuItems = menuItems;
 	}
 
-	/**
-	 * Adds given item to the list of menu items. Returns reference to this
-	 * object, so the creation can be chained:
-	 * 
-	 * <pre>
-	 * new Menu(name, context)
-	 * 	.addMenuItem(new MenuItem(...))
-	 * 	.addMenuItem(new MenuItem(...))
-	 * </pre>
-	 * 
-	 * @param menuItem
-	 *            {@link MenuItem} to add
-	 * @return reference to this {@link BasicMenu}
-	 */
-	public BasicMenu addMenuItem(MenuItem menuItem) {
-		menuItems.add(menuItem);
-		return this;
-	}
-
 	@Override
 	protected List<MenuItem> getMenuItems() {
 		return menuItems;
