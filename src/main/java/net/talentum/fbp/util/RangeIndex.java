@@ -16,10 +16,10 @@ public class RangeIndex {
 
 	protected AtomicInteger index;
 
-	protected IntUnaryOperator incrementer = new IncrementOperator();
-	protected IntUnaryOperator decrementer = new DecrementOperator();
-	protected IntUnaryOperator incrementerIfNotMax = new IncrementIfNotMaxOperator();
-	protected IntUnaryOperator decrementerIfNotMin = new DecrementIfNotMinOperator();
+	private IntUnaryOperator incrementer = new IncrementOperator();
+	private IntUnaryOperator decrementer = new DecrementOperator();
+	private IntUnaryOperator incrementerIfNotMax = new IncrementIfNotMaxOperator();
+	private IntUnaryOperator decrementerIfNotMin = new DecrementIfNotMinOperator();
 
 	/**
 	 * Default constructor. The initial value of {@code index} is {@code min}.
