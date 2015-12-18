@@ -4,6 +4,7 @@
   <Appenders>
     <Test name="Test"></Test>
     <Stack name="TestStack"></Stack>
+    <Internal></Internal>
   </Appenders>
 
   <Loggers>
@@ -11,6 +12,7 @@
     <Logger name="net.talentum.fbp.logging">
       <AppenderRef ref="Test" />
       <AppenderRef ref="TestStack" />
+      <AppenderRef ref="Internal" />
     </Logger>
   </Loggers>
 
