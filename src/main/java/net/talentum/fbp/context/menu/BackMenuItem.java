@@ -16,8 +16,13 @@ public class BackMenuItem implements MenuItem {
 	}
 
 	@Override
+	public String getName() {
+		return "Back";
+	}
+
+	@Override
 	public void render(DisplaySection section, DisplayDriver display) {
-		display.write("Back", section);
+		display.write(getName(), section);
 	}
 
 }

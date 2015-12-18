@@ -50,4 +50,9 @@ public class TestInlineContext extends InlineContext {
 		super.dispatchRedrawRequest();
 	}
 
+	@Override
+	public String getName() {
+		return "TestInlineContext";
+	}
+
 }

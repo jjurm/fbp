@@ -81,11 +81,7 @@ public abstract class ContextMenuItem extends Context implements MenuItem {
 		return callerMenu;
 	}
 
-	/**
-	 * Returns name of this {@link ContextMenuItem}.
-	 * 
-	 * @return
-	 */
+	@Override
 	public String getName() {
 		return name;
 	}

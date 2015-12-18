@@ -33,7 +33,7 @@ public class RangeIndex {
 	 */
 	public RangeIndex(int min, int max) {
 		if (min > max) {
-			throw new IllegalArgumentException("From index can't be higher than To index");
+			throw new IllegalArgumentException(String.format("Min can't be higher than Max (%d, %d)", min, max));
 		}
 		this.min = min;
 		this.max = max;

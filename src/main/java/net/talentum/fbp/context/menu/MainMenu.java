@@ -59,4 +59,9 @@ public class MainMenu extends BasicMenu {
 		super.enter();
 	}
 
+	@Override
+	protected void back() {
+		contextHolder.switchContext(homeScreen);
+	}
+
 }

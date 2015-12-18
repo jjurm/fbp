@@ -1,13 +1,14 @@
 package net.talentum.fbp.context.menu;
 
 import net.talentum.fbp.context.ElementRenderer;
+import net.talentum.fbp.ui.Nameable;
 
 /**
  * Interface representing item in {@link MenuItem}.
  * 
  * @author JJurM
  */
-public interface MenuItem extends ElementRenderer {
+public interface MenuItem extends ElementRenderer, Nameable {
 
 	/**
 	 * Call to {@link MenuItem#call(AbstractMenu)} method means that it was

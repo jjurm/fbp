@@ -109,14 +109,18 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 
 	@Override
 	public void render(DisplaySection section, DisplayDriver display) {
-		if (isActive()) {
-			display.write("\0xBC ", section.getStart(), section.getRow()); // ">>
-																			// "
-		} else {
-			display.write("> ", section.getStart(), section.getRow());
-		}
-		display.write(options.get(index.get()).label, section);
+		String lbl = getLabel() + ": ";
+		display.write(lbl, 2, section.getRow());
+		display.write(options.get(index.get()).name,
+				new DisplaySection(section.getRow(), 2 + lbl.length(), section.getEnd()));
 	}
+
+	/**
+	 * Label that should be display as a description of what is being selected.
+	 * 
+	 * @return
+	 */
+	protected abstract String getLabel();
 
 	/**
 	 * Object that has associated {@code T} with String. Represent one option in
@@ -128,11 +132,11 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 	public static class Option<T> {
 
 		private T value;
-		private String label;
+		private String name;
 
-		public Option(T value, String label) {
+		public Option(T value, String name) {
 			this.value = value;
-			this.label = label;
+			this.name = name;
 		}
 
 	}

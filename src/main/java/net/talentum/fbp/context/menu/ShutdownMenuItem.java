@@ -7,8 +7,13 @@ import net.talentum.fbp.system.Main;
 public class ShutdownMenuItem implements MenuItem {
 
 	@Override
+	public String getName() {
+		return "Shutdown";
+	}
+	
+	@Override
 	public void render(DisplaySection section, DisplayDriver display) {
-		display.write("Shutdown", section);
+		display.write(getName(), section);
 	}
 
 	@Override

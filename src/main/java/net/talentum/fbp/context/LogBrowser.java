@@ -96,6 +96,16 @@ public class LogBrowser extends InfoContext {
 		protected void changed(Level value) {
 			level = value;
 		}
+
+		@Override
+		public String getName() {
+			return "LogLevelSelection";
+		}
+
+		@Override
+		protected String getLabel() {
+			return "Level";
+		}
 		
 	}
 

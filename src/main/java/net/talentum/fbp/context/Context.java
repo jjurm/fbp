@@ -4,6 +4,7 @@ import net.talentum.fbp.display.RedrawRequestDispatcher;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
+import net.talentum.fbp.ui.Nameable;
 
 /**
  * This class is fully responsible for actions about specific context and
@@ -12,7 +13,7 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * 
  * @author JJurM
  */
-public abstract class Context extends RedrawRequestDispatcher implements ButtonEventHandler {
+public abstract class Context extends RedrawRequestDispatcher implements ButtonEventHandler, Nameable {
 
 	/**
 	 * Reference to holder of {@link Context}, which should be called in order

@@ -22,4 +22,9 @@ public class TestMenuItem implements MenuItem {
 		// do not render
 	}
 
+	@Override
+	public String getName() {
+		return "TestMenuItem";
+	}
+
 }

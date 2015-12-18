@@ -28,6 +28,11 @@ public class HomeScreen extends Context {
 		super(contextHolder);
 	}
 	
+	@Override
+	public String getName() {
+		return "HomeScreen";
+	}
+	
 	public void setMainMenu(MainMenu mainMenu) {
 		this.mainMenu = mainMenu;
 	}
@@ -43,6 +48,7 @@ public class HomeScreen extends Context {
 	@Override
 	public void renderContext(DisplayDriver display) {
 		// title bar
+		display.clear();
 		display.wline(0, "HomeScreen");
 	}
 

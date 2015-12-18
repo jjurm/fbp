@@ -156,10 +156,12 @@ public abstract class AbstractMenu extends ContextMenuItem implements RedrawRequ
 			}
 		}
 	}
-	
+
 	protected void changedSelected() {
 		adjustScrollPosition();
-		LOG.trace(String.format("menu: Changed item to %s", menuItems.get(selected.get()).getClass().getName()));
+		MenuItem item = menuItems.get(selected.get());
+		LOG.trace(String.format("menu: Changed item to %s: %s", item.getName(), item.getClass().getName()));
+		dispatchRedrawRequest();
 	}
 
 	@Override
@@ -182,9 +184,17 @@ public abstract class AbstractMenu extends ContextMenuItem implements RedrawRequ
 		MenuItem item;
 		for (int i = 0; i < getDisplayRows() - 1; i++) {
 			item = menuItems.get(scrollPosition + i);
+			String pointer;
 			if (selected.get() == scrollPosition + i) {
-				display.write(0xBC, 0, i);
+				if (activeInlineContext != null) {
+					pointer = ">>";
+				} else {
+					pointer = "> ";
+				}
+			} else {
+				pointer = "  ";
 			}
+			display.write(pointer, 0, 1 + i);
 			item.render(new DisplaySection(1 + i, 2, getDisplayColumns()), display);
 		}
 	}
