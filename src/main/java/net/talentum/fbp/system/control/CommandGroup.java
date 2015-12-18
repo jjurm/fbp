@@ -27,7 +27,7 @@ public class CommandGroup implements Command {
 		try {
 			String commandName;
 			String[] args2;
-			
+
 			if (args.length >= 1) {
 				commandName = args[0];
 				args2 = Arrays.copyOfRange(args, 1, args.length);
@@ -38,9 +38,8 @@ public class CommandGroup implements Command {
 
 			Command command = commands.get(commandName);
 			if (command == null) {
-				pw.println(Commander.CHAR_UNKNOWN_COMMAND);
-			} else {
 				LOG.trace(String.format("Unknown subcommand: %s", commandName));
+			} else {
 				command.process(args2, br, pw);
 			}
 		} catch (IndexOutOfBoundsException e) {

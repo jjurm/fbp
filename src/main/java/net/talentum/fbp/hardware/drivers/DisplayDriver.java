@@ -16,7 +16,7 @@ import net.talentum.fbp.hardware.Pins;
 import net.talentum.fbp.system.Config;
 
 /**
- * {@link DisplayDriver} is used to controll the lcd display. It implements methods to create and use
+ * {@link DisplayDriver} is used to control the lcd display. It implements methods to create and use
  * special characters, write to specific coordinates(rows and columns). 
  * 
  * DisplayDriver implements the setup() and the close() methods and works as a {@link Driver}.
@@ -172,6 +172,7 @@ public class DisplayDriver implements Driver {
 	@Override
 	public void close() {
 		lcd.clear();
+		lcd.setBacklight(false);
 		lcd.setDisplay(DISPLAY.OFF);
 	}
 	

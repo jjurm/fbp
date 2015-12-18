@@ -1,7 +1,10 @@
 package net.talentum.fbp.context;
 
+import net.talentum.fbp.context.menu.MenuItem;
+import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonState;
+import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
  * Basic {@link Context} (specifically {@link ContextMenuItem}) whose purpose is
@@ -52,6 +55,11 @@ public abstract class InfoContext extends ContextMenuItem {
 	}
 
 	/**
+	 * Returns what should be displayed when rendering as {@link MenuItem}.
+	 */
+	protected abstract String getLabel();
+
+	/**
 	 * Called when {@code LEFT} button is pressed. Children can override this
 	 * method to specify the body.
 	 */
@@ -64,5 +72,10 @@ public abstract class InfoContext extends ContextMenuItem {
 	 */
 	protected void pressedRight() {
 	};
+
+	@Override
+	public void render(DisplaySection section, DisplayDriver display) {
+		display.write(getLabel(), section);
+	}
 
 }

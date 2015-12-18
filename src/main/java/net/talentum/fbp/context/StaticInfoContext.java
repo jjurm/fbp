@@ -1,6 +1,5 @@
 package net.talentum.fbp.context;
 
-import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 import net.talentum.fbp.system.Config;
 import net.talentum.fbp.ui.AbstractStringContent;
@@ -37,16 +36,15 @@ public class StaticInfoContext extends InfoContext {
 		super(name, contextHolder);
 		this.content = content;
 	}
-	
+
 	@Override
-	protected void enter() {
-		// do nothing
+	protected String getLabel() {
+		return getName();
 	}
 
 	@Override
-	public void render(DisplaySection section, DisplayDriver display) {
-		// only print name
-		display.write(getName(), section);
+	protected void enter() {
+		// do nothing
 	}
 
 	@Override

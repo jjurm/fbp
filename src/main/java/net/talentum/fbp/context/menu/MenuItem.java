@@ -1,6 +1,6 @@
 package net.talentum.fbp.context.menu;
 
-import net.talentum.fbp.context.ElementRenderer;
+import net.talentum.fbp.display.ElementRenderer;
 import net.talentum.fbp.ui.Nameable;
 
 /**

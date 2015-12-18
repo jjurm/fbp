@@ -1,6 +1,5 @@
 package net.talentum.fbp.context.menu;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +7,7 @@ import net.talentum.fbp.display.DisplaySection;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
-import net.talentum.fbp.util.RangeIndex;
+import net.talentum.fbp.util.ListWalker;
 
 /**
  * Specific inline context designed to help create inline selections in a menu.
@@ -26,26 +25,20 @@ import net.talentum.fbp.util.RangeIndex;
  */
 public abstract class SelectionInlineContext<T> extends InlineContext {
 
-	/**
-	 * Unmodifiable list of options
-	 */
-	protected final List<Option<T>> options;
-	protected final boolean allowLoop;
-	private RangeIndex index;
+	private ListWalker<Option<T>> walker;
 
 	/**
 	 * Default constructor, takes mapping {@code T -> String}.
 	 * 
 	 * @param options
+	 *            list of options
 	 * @param allowLoop
 	 *            what should be done when user wants to cycle over first or
 	 *            last element: to continue from the other side or to do nothing
 	 * @see SelectionInlineContext
 	 */
 	public SelectionInlineContext(List<Option<T>> options, boolean allowLoop) {
-		this.options = Collections.unmodifiableList(options);
-		this.allowLoop = allowLoop;
-		this.index = new RangeIndex(options.size() - 1);
+		walker = new ListWalker<Option<T>>(options, allowLoop);
 	}
 
 	@Override
@@ -56,17 +49,13 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 				returnToMenu();
 				break;
 			case LEFT:
-				if (allowLoop)
-					index.decrement();
-				else
-					index.decrementIfNotMin();
+				walker.increment();
+				changed(selected());
 				dispatchRedrawRequest();
 				break;
 			case RIGHT:
-				if (allowLoop)
-					index.increment();
-				else
-					index.incrementIfNotMax();
+				walker.decrement();
+				changed(selected());
 				dispatchRedrawRequest();
 				break;
 			}
@@ -80,9 +69,9 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 	 * 
 	 * @return
 	 */
-	protected RangeIndex index() {
-		return index;
-	}
+	/*
+	 * protected RangeIndex index() { return index; }
+	 */
 
 	/**
 	 * Returns currently selected value.
@@ -90,7 +79,7 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 	 * @return
 	 */
 	protected T selected() {
-		return options.get(index.get()).value;
+		return walker.getSelected().value;
 	}
 
 	@Override
@@ -99,21 +88,12 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 	}
 
 	/**
-	 * This method will be called upon every change of index. Must be
-	 * overridden.
+	 * This method will be called upon every change of index.
 	 *
 	 * @param value
 	 *            New selected value
 	 */
 	protected abstract void changed(T value);
-
-	@Override
-	public void render(DisplaySection section, DisplayDriver display) {
-		String lbl = getLabel() + ": ";
-		display.write(lbl, 2, section.getRow());
-		display.write(options.get(index.get()).name,
-				new DisplaySection(section.getRow(), 2 + lbl.length(), section.getEnd()));
-	}
 
 	/**
 	 * Label that should be display as a description of what is being selected.
@@ -121,6 +101,14 @@ public abstract class SelectionInlineContext<T> extends InlineContext {
 	 * @return
 	 */
 	protected abstract String getLabel();
+
+	@Override
+	public void render(DisplaySection section, DisplayDriver display) {
+		String lbl = getLabel() + ": ";
+		display.write(lbl, 2, section.getRow());
+		display.write(walker.getSelected().name,
+				new DisplaySection(section.getRow(), 2 + lbl.length(), section.getEnd()));
+	}
 
 	/**
 	 * Object that has associated {@code T} with String. Represent one option in

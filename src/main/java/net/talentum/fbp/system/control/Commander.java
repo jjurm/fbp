@@ -23,9 +23,6 @@ import net.talentum.fbp.system.Main;
 public class Commander {
 	private static final Logger LOG = LogManager.getLogger();
 
-	public static final String WARN_CHARACTER = "!";
-	public static final String CHAR_UNKNOWN_COMMAND = "?";
-
 	Map<String, Command> commands = new HashMap<String, Command>();
 
 	static final Logger clientLogger = LogManager.getLogger("client");
@@ -124,7 +121,6 @@ public class Commander {
 				command.process(args, br, pw);
 			} else {
 				LOG.trace(String.format("Unknown command: %s", line.trim()));
-				pw.println(CHAR_UNKNOWN_COMMAND);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

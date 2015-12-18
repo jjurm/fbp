@@ -9,8 +9,8 @@ import net.talentum.fbp.context.HomeScreen;
 import net.talentum.fbp.context.LogBrowser;
 import net.talentum.fbp.context.StaticInfoContext;
 import net.talentum.fbp.context.menu.BackMenuItem;
-import net.talentum.fbp.context.menu.MainMenu;
 import net.talentum.fbp.context.menu.BasicMenu;
+import net.talentum.fbp.context.menu.MainMenu;
 import net.talentum.fbp.context.menu.ShutdownMenuItem;
 import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.button.ButtonEvent;
@@ -104,7 +104,8 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	 */
 	@Override
 	public void switchContext(Context context) {
-		LOG.debug(String.format("display: Switching context to %s: %s", context.getName(), context.getClass().getName()));
+		LOG.debug(
+				String.format("display: Switching context to %s: %s", context.getName(), context.getClass().getName()));
 
 		// deregister handler from old context
 		if (activeContext != null)
@@ -122,7 +123,8 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
-		LOG.trace(String.format("display: Button event [%s] [%s]", event.getButtonType(), event.getButtonState()), event);
+		LOG.trace(String.format("display: Button event [%s] [%s]", event.getButtonType(), event.getButtonState()),
+				event);
 
 		// delegate all button events to active context
 		activeContext.buttonStateChanged(event);
@@ -135,7 +137,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 		// redraw active context
 		activeContext.renderContext(displayDriver);
 	}
-	
+
 	/**
 	 * Simply returns home.
 	 */
