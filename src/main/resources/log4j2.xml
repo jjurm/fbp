@@ -22,6 +22,7 @@
       </PatternLayout>
     </File>
     <Stack name="DatabaseStack"></Stack>
+    <Internal></Internal>
   </Appenders>
 
   <Loggers>
@@ -29,6 +30,7 @@
       <AppenderRef ref="Console"/>
       <AppenderRef ref="LogFile"/>
       <AppenderRef ref="DatabaseStack" />
+      <AppenderRef ref="Internal" />
     </Root>
     <Logger name="snaq.db.ConnectionPool" level="info">
       <RegexFilter regex=".*Getting connection.*" onMatch="DENY" onMismatch="NEUTRAL" />

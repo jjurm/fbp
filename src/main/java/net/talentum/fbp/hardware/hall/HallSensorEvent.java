@@ -1,7 +1,17 @@
 package net.talentum.fbp.hardware.hall;
 
+/**
+ * One event that can be triggered by the {@link HallSensor}. 
+ * Events are unique, specified by the time of the event and the state
+ * of the {@link HallSensor} after the event has happened.
+ * @author padr31
+ *
+ */
 public class HallSensorEvent {
 
+	/**
+	 * The state of the sensor after the event.
+	 */
 	private HallSensorState state;
 	private long time;
 	

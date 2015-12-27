@@ -74,3 +74,4 @@ local.properties
 *.log
 config/*.xml
 !config/*.sample.xml
+!config/*.default.xml

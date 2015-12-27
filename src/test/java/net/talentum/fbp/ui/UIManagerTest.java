@@ -1,4 +1,4 @@
-package net.talentum.fbp.context;
+package net.talentum.fbp.ui;
 
 import static org.junit.Assert.*;
 
@@ -6,16 +6,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.talentum.fbp.context.TestContext;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.NullDisplayDriver;
+import net.talentum.fbp.test.TestBase;
+import net.talentum.fbp.ui.UIManager;
 
 /**
  * Tests basic logic of {@link UIManager}.
  * 
  * @author JJurM
  */
-public class UIManagerTest {
+public class UIManagerTest extends TestBase {
 
 	private UIManager uiManager;
 	private TestContext context;

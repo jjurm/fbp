@@ -1,10 +1,16 @@
 package net.talentum.fbp.hardware.hall;
 
 import net.talentum.fbp.hardware.drivers.HallSensorDriver;
-
-public class HallSensorDataMonitor implements HallSensorEventHandler{
+/**
+ * This class is responsible for gathering the data from the {@link HallSensor}. It will
+ * perform checks and database uploads in every specified-length time interval. 
+ * @author padr31
+ *
+ */
+public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	
 	private HallSensorDriver hallSensorDriver;
+	private Thread hallSensorDataMonitorThread;
 	
 	public HallSensorDataMonitor(HallSensorDriver hallSensorDriver) {
 		this.hallSensorDriver = hallSensorDriver;
@@ -13,6 +19,12 @@ public class HallSensorDataMonitor implements HallSensorEventHandler{
 
 	@Override
 	public void hallSensorStateChanged(HallSensorEvent event) {		
+		
+	}
+
+	@Override
+	public void run() {
+		
 	}
 	
 }

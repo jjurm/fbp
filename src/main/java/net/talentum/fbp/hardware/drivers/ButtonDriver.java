@@ -1,48 +1,74 @@
 package net.talentum.fbp.hardware.drivers;
 
-import net.talentum.fbp.context.UIManager;
 import net.talentum.fbp.hardware.Pins;
 import net.talentum.fbp.hardware.button.Button;
 import net.talentum.fbp.hardware.button.ButtonEvent;
+import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.button.ButtonType;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
+/**
+ * Class for working with {@link ButtonEvent}s.
+ * Adding listeners to the button pins.
+ * @author padr31
+ *
+ */
 public class ButtonDriver implements Driver{
 	
 	private Button btn_ok;
 	private Button btn_r;
 	private Button btn_l;
 	
-	private GpioController gpio;
+	private ButtonEventHandler buttonEventHandler;
 	
-	private UIManager uiManager;
+	private static final Logger LOG = LogManager.getLogger();
 	
-	public ButtonDriver(GpioController gpio, UIManager uiManager) {
-		this.uiManager = uiManager;
+	public ButtonDriver(GpioController gpio, ButtonEventHandler buttonEventHandler) {
+		this.buttonEventHandler = buttonEventHandler;
 		
 		setup(gpio);
 		
-		addListener(btn_ok);
-		addListener(btn_r);
-		addListener(btn_l);
 	}
-
+	
+	/**
+	 * Adding the Listener to the button and delegating the events to the Handler.
+	 * Should the buttonEventHandler be null the method logs it through the logger.
+	 * @param button
+	 */
 	private void addListener(Button button) {
-		button.in.addListener(new GpioPinListenerDigital(){
+		button.getInput().addListener(new GpioPinListenerDigital(){
 
 			@Override
 			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 				ButtonState state = event.getState() == PinState.LOW ? ButtonState.PRESSED : ButtonState.RELEASED;
 				ButtonType type = button.getType();
-				uiManager.buttonStateChanged(new ButtonEvent(type, state));
+				
+				if(buttonEventHandler != null) {
+					buttonEventHandler.buttonStateChanged(new ButtonEvent(type, state));
+				} else {
+					LOG.debug("ButtonDriver: eventHandler was null");
+				}
 			}
 			
 		});
+	}
+	
+	public void addListeners() {
+		addListener(btn_ok);
+		addListener(btn_r);
+		addListener(btn_l);
+	}
+	
+	public void setButtonEventHandler(ButtonEventHandler buttonEventHandler) {
+		this.buttonEventHandler = buttonEventHandler;
 	}
 	
 	@Override
@@ -54,9 +80,9 @@ public class ButtonDriver implements Driver{
 
 	@Override
 	public void close() {
-		btn_ok.in.unexport();
-		btn_r.in.unexport();
-		btn_l.in.unexport();
+		btn_ok.getInput().unexport();
+		btn_r.getInput().unexport();
+		btn_l.getInput().unexport();
 	}
 	
 }

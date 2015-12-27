@@ -13,13 +13,18 @@ public class TestMenuItem implements MenuItem {
 	protected boolean called = false;
 
 	@Override
-	public void call(Menu menu) {
+	public void call(AbstractMenu menu) {
 		called = true;
 	}
 
 	@Override
 	public void render(DisplaySection displaySection, DisplayDriver displayDriver) {
 		// do not render
+	}
+
+	@Override
+	public String getName() {
+		return "TestMenuItem";
 	}
 
 }

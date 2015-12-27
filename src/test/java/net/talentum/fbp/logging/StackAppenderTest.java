@@ -11,11 +11,15 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StackAppenderTest {
+import net.talentum.fbp.test.TestBase;
+
+public class StackAppenderTest extends TestBase {
 
 	private Logger LOG;
 	private TestAppender testAppender;
 	private StackAppender testStackAppender;
+
+	private int logCount;
 
 	@Before
 	public void getLogger() {
@@ -25,13 +29,13 @@ public class StackAppenderTest {
 
 		testAppender = (TestAppender) config.getAppender("Test");
 		testStackAppender = (StackAppender) config.getAppender("TestStack");
+		logCount = testAppender.getLogEvents().size();
 	}
 
 	@Test
 	public void testLogger() {
-		int logCount = testAppender.getLogEvents().size();
 		LOG.info("test");
-		logCount++;
+		logCount += 1;
 		assertThat(testAppender.getLogEvents().size(), is(logCount));
 		assertEquals(testAppender.getLogEvents().get(logCount - 1).getMessage().getFormattedMessage(), "test");
 	}
@@ -41,14 +45,16 @@ public class StackAppenderTest {
 		TestAppender testAppender2 = new TestAppender("Test2", null);
 		LOG.info("test1");
 		LOG.info("test2");
+		logCount += 2;
 		assertThat(testAppender2.getLogEvents().size(), is(0));
 		testStackAppender.setAppender(testAppender2);
-		assertThat(testAppender2.getLogEvents().size(), is(2));
-		assertEquals(testAppender.getLogEvents().get(0).getMessage().getFormattedMessage(), "test1");
-		assertEquals(testAppender.getLogEvents().get(1).getMessage().getFormattedMessage(), "test2");
+		assertThat(testAppender2.getLogEvents().size(), is(logCount));
+		assertEquals(testAppender.getLogEvents().get(logCount - 2).getMessage().getFormattedMessage(), "test1");
+		assertEquals(testAppender.getLogEvents().get(logCount - 1).getMessage().getFormattedMessage(), "test2");
 		LOG.info("test3");
-		assertThat(testAppender2.getLogEvents().size(), is(3));
-		assertEquals(testAppender.getLogEvents().get(2).getMessage().getFormattedMessage(), "test3");
+		logCount += 1;
+		assertThat(testAppender2.getLogEvents().size(), is(logCount));
+		assertEquals(testAppender.getLogEvents().get(logCount - 1).getMessage().getFormattedMessage(), "test3");
 	}
 
 }

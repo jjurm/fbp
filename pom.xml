@@ -4,7 +4,7 @@
 
   <groupId>net.talentum.fbp</groupId>
   <artifactId>fbp</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 
   <name>fbp</name>
   <description>FBP</description>
@@ -23,6 +23,15 @@
         <filtering>true</filtering>
       </resource>
     </resources>
+
+    <extensions>
+      <!-- Enabling the use of SSH -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>2.8</version>
+      </extension>
+    </extensions>
 
     <plugins>
       <!-- Set a JDK compiler level -->
@@ -92,6 +101,37 @@
           <finalName>fbp</finalName>
           <appendAssemblyId>false</appendAssemblyId>
           <attach>false</attach>
+        </configuration>
+      </plugin>
+
+      <!-- Upload assembled JAR on 'deploy' -->
+      <plugin>
+       <groupId>org.codehaus.mojo</groupId>
+       <artifactId>wagon-maven-plugin</artifactId>
+       <version>1.0-beta-3</version>
+       <configuration>
+         <serverId>fbp-ssh</serverId>
+         <fromFile>${project.build.directory}/fbp.jar</fromFile>
+         <url>scp://fbp.jjurm.com/fbp</url>
+       </configuration>
+       <executions>
+         <execution>
+           <id>upload-jar-to-server</id>
+           <phase>deploy</phase>
+           <goals>
+             <goal>upload-single</goal>
+           </goals>
+         </execution>
+       </executions>
+      </plugin>
+
+      <!-- Don't run maven-deploy-plugin on deploy -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
@@ -171,6 +211,11 @@
       <version>1.11</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.4</version>
+    </dependency>
+    <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
       <version>1.10</version>
@@ -188,7 +233,7 @@
     <dependency>
       <groupId>com.jjurm.libs</groupId>
       <artifactId>charlcd</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -219,6 +264,11 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>fishbowl</artifactId>
+      <version>1.4.0</version>
     </dependency>
   </dependencies>
 </project>

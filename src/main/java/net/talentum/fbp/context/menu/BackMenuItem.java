@@ -11,16 +11,18 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
 public class BackMenuItem implements MenuItem {
 
 	@Override
-	public void call(Menu menu) {
-		// check if the menu has a parent
-		if (menu.getCallerMenu() != null)
-			// switch context to the parent menu
-			menu.contextHolder.switchContext(menu.getCallerMenu());
+	public void call(AbstractMenu menu) {
+		menu.back();
 	}
-	
+
 	@Override
-	public void render(DisplaySection displaySection, DisplayDriver displayDriver) {
-		// TODO render method of BackMenuItem
+	public String getName() {
+		return "Back";
+	}
+
+	@Override
+	public void render(DisplaySection section, DisplayDriver display) {
+		display.write(getName(), section);
 	}
 
 }

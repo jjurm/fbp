@@ -1,8 +1,17 @@
-package net.talentum.fbp.context;
+package net.talentum.fbp.ui;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.talentum.fbp.context.Context;
+import net.talentum.fbp.context.ContextHolder;
+import net.talentum.fbp.context.HomeScreen;
+import net.talentum.fbp.context.LogBrowser;
+import net.talentum.fbp.context.StaticInfoContext;
+import net.talentum.fbp.context.menu.BackMenuItem;
+import net.talentum.fbp.context.menu.BasicMenu;
+import net.talentum.fbp.context.menu.MainMenu;
+import net.talentum.fbp.context.menu.ShutdownMenuItem;
 import net.talentum.fbp.display.RedrawRequestHandler;
 import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
@@ -23,6 +32,7 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	private static final Logger LOG = LogManager.getLogger();
 
 	private DisplayDriver displayDriver;
+	private HomeScreen homeScreen;
 
 	private Context activeContext;
 
@@ -33,6 +43,46 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	 */
 	public UIManager(DisplayDriver displayDriver) {
 		this.displayDriver = displayDriver;
+	}
+
+	/**
+	 * Creates menu hierarchy and sets created instance of {@link HomeScreen} as
+	 * first active context.
+	 */
+	public void init() {
+		constructMenuHierarchy();
+		switchContext(homeScreen);
+	}
+
+	/**
+	 * Whole menu hierarchy is defined and created in this method. Also prepares
+	 * underlying {@link Context}s.
+	 */
+	protected void constructMenuHierarchy() {
+		LogBrowser logBrowser = new LogBrowser(this);
+
+		// @formatter:off
+		homeScreen = new HomeScreen(this);
+		homeScreen.setMainMenu(
+				BasicMenu.Builder.create(MainMenu.getConstructor(homeScreen), "Main menu", this)
+				.item(
+						BasicMenu.Builder.create("Logs", this)
+						.item(logBrowser.new LogLevelSelection())
+						.item(logBrowser)
+						.item(new BackMenuItem())
+						.build()
+				)
+				.item(
+						BasicMenu.Builder.create("Settings", this)
+						.item(new BackMenuItem())
+						.build()
+				)
+				.item(new StaticInfoContext("About FBP", new AutoWrapStringContent("FBP project is developed with care and enthusiasm.", 1), this))
+				.item(new ShutdownMenuItem())
+				.item(new BackMenuItem())
+				.build()
+		);
+		// @formatter:on
 	}
 
 	@Override
@@ -54,7 +104,8 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 	 */
 	@Override
 	public void switchContext(Context context) {
-		LOG.debug("display: Switching context to " + context.getClass().getName());
+		LOG.debug(
+				String.format("display: Switching context to %s: %s", context.getName(), context.getClass().getName()));
 
 		// deregister handler from old context
 		if (activeContext != null)
@@ -72,18 +123,26 @@ public class UIManager implements ButtonEventHandler, RedrawRequestHandler, Cont
 
 	@Override
 	public void buttonStateChanged(ButtonEvent event) {
-		LOG.debug("display: Button event", event);
+		LOG.trace(String.format("display: Button event [%s] [%s]", event.getButtonType(), event.getButtonState()),
+				event);
 
 		// delegate all button events to active context
 		activeContext.buttonStateChanged(event);
 	}
 
 	@Override
-	public void request() {
+	public void handleRedrawRequest() {
 		LOG.trace("display: Redraw request");
 
 		// redraw active context
 		activeContext.renderContext(displayDriver);
+	}
+
+	/**
+	 * Simply returns home.
+	 */
+	public void goHome() {
+		switchContext(homeScreen);
 	}
 
 }

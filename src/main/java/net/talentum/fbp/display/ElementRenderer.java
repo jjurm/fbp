@@ -1,6 +1,6 @@
-package net.talentum.fbp.context;
+package net.talentum.fbp.display;
 
-import net.talentum.fbp.display.DisplaySection;
+import net.talentum.fbp.context.Context;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 
 /**
@@ -10,6 +10,7 @@ import net.talentum.fbp.hardware.drivers.DisplayDriver;
  * 
  * @author JJurM
  */
+@FunctionalInterface
 public interface ElementRenderer {
 
 	/**
