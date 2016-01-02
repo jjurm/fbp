@@ -52,7 +52,7 @@ public class ButtonDriver implements Driver{
 				ButtonType type = button.getType();
 				
 				if(buttonEventHandler != null) {
-					buttonEventHandler.buttonStateChanged(new ButtonEvent(type, state));
+					buttonEventHandler.buttonStateChangedAsync(new ButtonEvent(type, state));
 				} else {
 					LOG.debug("ButtonDriver: eventHandler was null");
 				}

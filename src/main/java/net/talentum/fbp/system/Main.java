@@ -32,7 +32,7 @@ public class Main {
 
 	private static Commander commander;
 	private static ConsoleReader consoleReader;
-	
+
 	private static GpioController gpio;
 
 	private static HardwareManager hardwareManager;
@@ -88,7 +88,7 @@ public class Main {
 		setTimeZone();
 		createConnectionPool();
 		DatabaseManager.addLog4j2JdbcAppender();
-		
+
 		commander = new Commander();
 		consoleReader = new ConsoleReader(commander);
 		consoleReader.start();
@@ -106,7 +106,7 @@ public class Main {
 
 		// UI
 		LOG.debug("Starting UI");
-		
+
 		uiManager = new UIManager(hardwareManager.getDisplayDriver());
 		uiManager.init();
 		hardwareManager.setButtonEventHandler(uiManager);
@@ -132,6 +132,8 @@ public class Main {
 			// these actions will be performed once during shutdown
 
 			LOG.log(Levels.DIAG, "Performing shutdown");
+
+			uiManager.shutdown();
 
 			// Shutdown drivers
 			if (hardwareManager != null) {
