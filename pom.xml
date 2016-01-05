@@ -112,7 +112,7 @@
        <configuration>
          <serverId>fbp-ssh</serverId>
          <fromFile>${project.build.directory}/fbp.jar</fromFile>
-         <url>scp://fbp.jjurm.com/fbp</url>
+         <url>scp://${fbp.host}/fbp</url>
        </configuration>
        <executions>
          <execution>
