@@ -233,7 +233,7 @@
     <dependency>
       <groupId>com.jjurm.libs</groupId>
       <artifactId>charlcd</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
