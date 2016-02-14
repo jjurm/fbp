@@ -3,6 +3,15 @@ package net.talentum.fbp.system;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.talentum.fbp.database.DatabaseManager;
+import net.talentum.fbp.hardware.HardwareManager;
+import net.talentum.fbp.hardware.drivers.DisplayDriver;
+import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
+import net.talentum.fbp.logging.Levels;
+import net.talentum.fbp.system.control.Commander;
+import net.talentum.fbp.system.control.ConsoleReader;
+import net.talentum.fbp.ui.UIManager;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +22,6 @@ import org.joda.time.DateTimeZone;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-
-import net.talentum.fbp.database.DatabaseManager;
-import net.talentum.fbp.hardware.HardwareManager;
-import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
-import net.talentum.fbp.logging.Levels;
-import net.talentum.fbp.system.control.Commander;
-import net.talentum.fbp.system.control.ConsoleReader;
-import net.talentum.fbp.ui.UIManager;
 
 /**
  * Main starting class of the program.
@@ -101,13 +102,13 @@ public class Main {
 		// Devices
 		LOG.debug("Setting up devices");
 
-		hardwareManager = new HardwareManager(gpio, null, null);
-		hallSensorDataMonitor = new HallSensorDataMonitor(hardwareManager.getHallSensorDriver());
+		hallSensorDataMonitor = new HallSensorDataMonitor();
+		hardwareManager = new HardwareManager(gpio, null, hallSensorDataMonitor);
 
 		// UI
 		LOG.debug("Starting UI");
 
-		uiManager = new UIManager(hardwareManager.getDisplayDriver());
+		uiManager = new UIManager((DisplayDriver)hardwareManager.getDisplayDriver());
 		uiManager.init();
 		hardwareManager.setButtonEventHandler(uiManager);
 
