@@ -1,5 +1,8 @@
 package net.talentum.fbp.hardware;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.talentum.fbp.hardware.button.ButtonEventHandler;
 import net.talentum.fbp.hardware.drivers.ButtonDriver;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -8,6 +11,7 @@ import net.talentum.fbp.hardware.drivers.HallSensorDriver;
 import net.talentum.fbp.hardware.drivers.LedDriver;
 import net.talentum.fbp.hardware.drivers.PiezoDriver;
 import net.talentum.fbp.hardware.hall.HallSensorEventHandler;
+
 import com.pi4j.io.gpio.GpioController;
 
 /**
@@ -18,6 +22,8 @@ import com.pi4j.io.gpio.GpioController;
  */
 public class HardwareManager {
 
+	private static final Logger LOG = LogManager.getLogger();
+	
 	private ButtonDriver buttonDriver;
 	private DisplayDriver displayDriver;
 	private HallSensorDriver hallSensorDriver;
@@ -42,17 +48,24 @@ public class HardwareManager {
 	 * of the methods in the Drivers.
 	 */
 	private void constructDrivers() {
+		LOG.debug("hardware: Setting up buttons...");
 		buttonDriver = new ButtonDriver(gpio, buttonEventHandler);
 		buttonDriver.addListeners();
+		LOG.debug("hardware: ButtonDriver and listeners are set up.");
 
+		LOG.debug("hardware: Setting up DisplayDriver...");
 		displayDriver = new DisplayDriver(gpio, true);
+		LOG.debug("hardware: DisplayDriver set up.");
 
+		LOG.debug("hardware: Setting up hall sensor...");
 		hallSensorDriver = new HallSensorDriver(gpio, hallSensorEventHandler);
 		hallSensorDriver.addListener();
+		LOG.debug("hardware: HallSensorDriver and listeners are set up.");
 
+		LOG.debug("hardware: Setting up leds and piezo...");
 		ledDriver = new LedDriver(gpio);
-
 		piezoDriver = new PiezoDriver(gpio);
+		LOG.debug("hardware: LedDriver and PiezoDriver are set up.");
 
 	}
 
@@ -95,7 +108,6 @@ public class HardwareManager {
 	 */
 	public void setButtonEventHandler(ButtonEventHandler buttonEventHandler) {
 		buttonDriver.setButtonEventHandler(buttonEventHandler);
-
 	}
 
 	/**
