@@ -12,8 +12,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * This class has an active connection to the database and is responsible for communication 
  * with the database and has methods for providing accurate information about the running fbp. 
+ * 
+ * DatabaseManager is also responsible for storing info, working with data in the
+ * database, analyzing it and giving it away in form of {@link Data}.
  * @author padr31
- *
+ * TODO Make methods for easy submission of Data of any type to database
  */
 public class DataManager {
 
@@ -27,6 +30,9 @@ public class DataManager {
 		createDatabaseStatement();
 	}
 
+	/**
+	 * Gets a connection from {@link DatabaseManager}.
+	 */
 	private void getDatabaseConnection() {
 		try {
 			LOG.debug("DataManager: Getting a database connection...");
@@ -47,6 +53,9 @@ public class DataManager {
 		}
 	}
 	
+	/**
+	 * Creates a statement from the connection which is used for querying the database.
+	 */
 	private void createDatabaseStatement() {
 		try {
 			if(dbConnection.isValid(0)){
@@ -59,6 +68,12 @@ public class DataManager {
 		
 	}
 	
+	/**
+	 * A method for writing the {@link Data} into the database. 
+	 * Decides how to write depending on the {@link DataType}.
+	 * @param data
+	 */
+	//TODO Do sth with the switch to make it more consistent
 	public void databaseWrite(Data data) {
 		switch(data.getType()){
 		case HALL:

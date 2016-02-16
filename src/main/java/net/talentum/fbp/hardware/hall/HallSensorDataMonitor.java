@@ -64,6 +64,10 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 		
 	}
 	
+	/**
+	 * This method performs data collection in specified time intervals({@code dataWriteInterval}).
+	 * Writes the current time and the number of time the magnet was near the hall sensor into the database.
+	 */
 	@Override
 	public void run() {
 		while(running){
