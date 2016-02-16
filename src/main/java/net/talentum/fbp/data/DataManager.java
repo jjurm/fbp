@@ -35,11 +35,11 @@ public class DataManager {
 	 */
 	private void getDatabaseConnection() {
 		try {
-			LOG.debug("DataManager: Getting a database connection...");
+			LOG.debug("Getting a database connection...");
 			dbConnection = DatabaseManager.getConnection();
-			LOG.debug("DataManager: Database connection ready.");
+			LOG.debug("Database connection ready.");
 		} catch (SQLException e) {
-			LOG.error("DataManager: Couldn't get a database connection.", e);
+			LOG.error("Couldn't get a database connection.", e);
 			e.printStackTrace();
 		}
 	}
@@ -48,7 +48,7 @@ public class DataManager {
 		try {
 			dbConnection.close();
 		} catch (SQLException e) {
-			LOG.error("DataManager: Couldn't close the database connection.", e);
+			LOG.error("Couldn't close the database connection.", e);
 			e.printStackTrace();
 		}
 	}
@@ -62,7 +62,7 @@ public class DataManager {
 				dbStatement = dbConnection.createStatement();
 			}
 		} catch (SQLException e) {
-			LOG.error("DataManager: Couldn't create database statement.");
+			LOG.error("Couldn't create database statement.");
 			e.printStackTrace();
 		}
 		
@@ -75,6 +75,7 @@ public class DataManager {
 	 */
 	//TODO Do sth with the switch to make it more consistent
 	public void databaseWrite(Data data) {
+		LOG.info("Performing database write");
 		switch(data.getType()){
 		case HALL:
 			String type = data.getType().toString();

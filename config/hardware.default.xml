@@ -4,4 +4,7 @@
 		<columns>20</columns>
 		<rows>4</rows>
 	</display>
+	<hall>
+		<debounce>500</debounce>
+	</hall>
 </hardware>

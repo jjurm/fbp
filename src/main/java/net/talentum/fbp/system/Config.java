@@ -39,6 +39,8 @@ public final class Config {
 	private static int displayRows;
 	
 	private static long dataWriteInterval;
+	
+	private static int hallDebounce;
 
 	/**
 	 * Fills some static fields. This method shall be called
@@ -51,6 +53,7 @@ public final class Config {
 		
 		dataWriteInterval = config.getLong("fbp/data/dataWriteInterval");
 		
+		hallDebounce = config.getInt("hardware/hall/debounce");
 	}
 
 	/**
@@ -75,6 +78,10 @@ public final class Config {
 
 	public static long getDataWriteInterval() {
 		return dataWriteInterval;
+	}
+
+	public static int getHallDebounce() {
+		return hallDebounce;
 	}
 
 }

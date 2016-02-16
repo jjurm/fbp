@@ -1,13 +1,10 @@
 package net.talentum.fbp.hardware.hall;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.talentum.fbp.data.Data;
 import net.talentum.fbp.data.DataManager;
 import net.talentum.fbp.data.DataType;
-import net.talentum.fbp.database.DatabaseManager;
 import net.talentum.fbp.system.Config;
 import net.talentum.fbp.system.Utils;
 
@@ -48,12 +45,15 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	
 	public synchronized void start() {
 		if(running) return;
+		running = true;
+		LOG.info("Starting hallSensorDataMonitorThread...");
 		hallSensorDataMonitorThread = new Thread(this);
 		hallSensorDataMonitorThread.start(); 
 	}
 
 	public synchronized void stop() {
 		if(!running) return;
+		running = false;
 		try {
 			LOG.info("Stopping hallSensorDataMonitorThread...");
 			hallSensorDataMonitorThread.join(0);
@@ -70,9 +70,11 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	 */
 	@Override
 	public void run() {
+		LOG.info("Starting data monitoring.");
 		while(running){
 			events.clear();
 			Utils.sleep(dataWriteInterval);
+			LOG.info("Gathering data...");
 			dataManager.databaseWrite(new Data.Builder(DataType.HALL, new Instant().getMillis()).setValue(events.size()/2).build());
 		}
 	}

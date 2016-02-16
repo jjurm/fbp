@@ -1,15 +1,18 @@
 package net.talentum.fbp.hardware.drivers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.talentum.fbp.hardware.InputDevice;
 import net.talentum.fbp.hardware.Pins;
+import net.talentum.fbp.hardware.hall.HallSensor;
 import net.talentum.fbp.hardware.hall.HallSensorEvent;
 import net.talentum.fbp.hardware.hall.HallSensorEventHandler;
 import net.talentum.fbp.hardware.hall.HallSensorState;
+import net.talentum.fbp.system.Config;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
@@ -28,8 +31,11 @@ public class HallSensorDriver implements Driver{
 	
 	private static final Logger LOG = LogManager.getLogger();
 	
+	private int hallDebounce;
+	
 	public HallSensorDriver(GpioController gpio, HallSensorEventHandler monitor) {
 		this.monitor = monitor;
+		hallDebounce = Config.getHallDebounce();
 		setup(gpio);
 	}
 	
@@ -39,6 +45,7 @@ public class HallSensorDriver implements Driver{
 	 * @param button
 	 */
 	public void addListener() {
+		hallSensor.getInput().setDebounce(hallDebounce);
 		hallSensor.getInput().addListener(new GpioPinListenerDigital() {
 			
 			 @Override
@@ -52,12 +59,13 @@ public class HallSensorDriver implements Driver{
 	                }
 	            }
 			 
-		});
+		});	
 	}
 
 	@Override
 	public void setup(GpioController gpio) {
 		hallSensor = new InputDevice(Pins.PIN_HALL, gpio);
+		hallSensor.getInput().setPullResistance(PinPullResistance.PULL_UP);
 	}
 
 	@Override
