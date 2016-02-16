@@ -3,4 +3,7 @@
 	<system>
 		<timezone>Europe/Bratislava</timezone>
 	</system>
+	<data>
+		<dataWriteInterval>60000</dataWriteInterval>
+	</data>
 </fbp>

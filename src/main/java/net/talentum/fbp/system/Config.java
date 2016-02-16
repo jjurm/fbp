@@ -37,6 +37,8 @@ public final class Config {
 
 	private static int displayColumns;
 	private static int displayRows;
+	
+	private static long dataWriteInterval;
 
 	/**
 	 * Fills some static fields. This method shall be called
@@ -46,6 +48,9 @@ public final class Config {
 
 		displayColumns = config.getInt("hardware/display/columns");
 		displayRows = config.getInt("hardware/display/rows");
+		
+		dataWriteInterval = config.getLong("fbp/data/dataWriteInterval");
+		
 	}
 
 	/**
@@ -66,6 +71,10 @@ public final class Config {
 
 	public static int getDisplayRows() {
 		return displayRows;
+	}
+
+	public static long getDataWriteInterval() {
+		return dataWriteInterval;
 	}
 
 }

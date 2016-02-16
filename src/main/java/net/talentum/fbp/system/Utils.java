@@ -14,4 +14,13 @@ public abstract class Utils {
 			Thread.currentThread().interrupt();
 		}
 	}
+	
+	public static void sleep(long ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			LOG.error(e);
+			Thread.currentThread().interrupt();
+		}
+	}
 }

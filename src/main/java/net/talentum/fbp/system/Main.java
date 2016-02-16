@@ -3,6 +3,7 @@ package net.talentum.fbp.system;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.talentum.fbp.data.DataManager;
 import net.talentum.fbp.database.DatabaseManager;
 import net.talentum.fbp.hardware.HardwareManager;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
@@ -33,6 +34,8 @@ public class Main {
 
 	private static Commander commander;
 	private static ConsoleReader consoleReader;
+	
+	private static DataManager dataManager;
 
 	private static GpioController gpio;
 
@@ -93,6 +96,8 @@ public class Main {
 		commander = new Commander();
 		consoleReader = new ConsoleReader(commander);
 		consoleReader.start();
+		
+		dataManager = new DataManager();
 
 		// GPIO
 		LOG.debug("Setting up GPIO");
@@ -102,7 +107,8 @@ public class Main {
 		// Devices
 		LOG.debug("Setting up devices");
 
-		hallSensorDataMonitor = new HallSensorDataMonitor();
+		hallSensorDataMonitor = new HallSensorDataMonitor(dataManager);
+		hallSensorDataMonitor.start();
 		hardwareManager = new HardwareManager(gpio, null, hallSensorDataMonitor);
 
 		// UI
@@ -148,6 +154,9 @@ public class Main {
 			}
 
 			// terminate communication with database
+			LOG.info("Closing dataManager's database connection.");
+			dataManager.closeConnection();
+			
 			LOG.info("Releasing connection pool");
 			try {
 				DatabaseManager.removeLog4j2JdbcAppender();
