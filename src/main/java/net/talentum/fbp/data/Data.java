@@ -1,5 +1,7 @@
 package net.talentum.fbp.data;
 
+import java.sql.Timestamp;
+
 /**
  * Class encapsulating the structure of columns in the database. 
  * Every row in the database can be expressed as an instance of {@link Data} and vice-versa.
@@ -11,20 +13,20 @@ package net.talentum.fbp.data;
 public class Data {
 
 	private final DataType dataType;
-	private final long time;
+	private final Timestamp time;
 	private final Object value;
 	
 	public static class Builder {
 		//required parameters
 		private final DataType dataType;
-		private final long time;
+		private final Timestamp time;
 		
 		//optional parameters
 		private Object value = null;
 		
-		public Builder(DataType dataType, long time) {
+		public Builder(DataType dataType, Timestamp timestamp) {
 			this.dataType = dataType;
-			this.time = time;
+			this.time = timestamp;
 		}
 		
 		public Builder setValue(Object value) {
@@ -47,7 +49,7 @@ public class Data {
 		return dataType;
 	}
 	
-	public long getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 	
