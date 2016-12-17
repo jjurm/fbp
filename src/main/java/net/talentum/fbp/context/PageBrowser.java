@@ -1,7 +1,6 @@
 package net.talentum.fbp.context;
 
 import java.util.List;
-
 import net.talentum.fbp.display.DisplayRenderer;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
 import net.talentum.fbp.util.ListWalker;

@@ -1,23 +1,32 @@
 package net.talentum.fbp.hardware.hall;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.talentum.fbp.data.Data;
 import net.talentum.fbp.data.DataManager;
 import net.talentum.fbp.data.DataType;
+import net.talentum.fbp.display.RedrawRequestDispatcher;
 import net.talentum.fbp.system.Config;
+import net.talentum.fbp.system.Main;
 import net.talentum.fbp.system.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.Instant;
+import org.joda.time.DateTime;
 /**
  * This class is responsible for gathering the data from the {@link HallSensor}. It will
  * perform checks and database uploads in every specified-length time interval. 
  * @author padr31
  *
  */
-public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
+/**
+ * This class is responsible for gathering the data from the {@link HallSensor}. It will
+ * perform checks and database uploads in every specified-length time interval. 
+ * @author padr31
+ *
+ */
+public class HallSensorDataMonitor extends RedrawRequestDispatcher implements HallSensorEventHandler, Runnable {
 	
 	private static final Logger LOG = LogManager.getLogger();
 		
@@ -31,6 +40,9 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	
 	private long dataWriteInterval;
 	
+	private static int RPM = 0;
+	private static int lastRPM = 0;
+	
 	public HallSensorDataMonitor(DataManager dataManager) {
 		dataWriteInterval = Config.getDataWriteInterval();
 		this.dataManager = dataManager;
@@ -40,7 +52,10 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	public void hallSensorStateChanged(HallSensorEvent event) {		
 		events.add(event);
 		if(event.getState().equals(HallSensorState.FAR)) System.out.println("Magnet is far.");
-		else System.out.println("Magnet is near.");
+		else {
+		  System.out.println("Magnet is near.");
+		  RPM++;
+		}
 	}
 	
 	public synchronized void start() {
@@ -70,13 +85,22 @@ public class HallSensorDataMonitor implements HallSensorEventHandler, Runnable{
 	 */
 	@Override
 	public void run() {
-		LOG.info("Starting data monitoring.");
+	  LOG.info("Starting data monitoring.");
+	  this.addRedrawRequestHandler(Main.uiManager);
+	  
 		while(running){
 			events.clear();
 			Utils.sleep(dataWriteInterval);
+			lastRPM = RPM;
+			RPM = 0;
+			this.dispatchRedrawRequest();
 			LOG.info("Gathering data...");
-			dataManager.databaseWrite(new Data.Builder(DataType.HALL, new Instant().getMillis()).setValue(events.size()/2).build());
+			dataManager.databaseWrite(new Data.Builder(DataType.HALL, new Timestamp(new DateTime().getMillis())).setValue(getRPM()).build());
 		}
 	}
+
+  public static String getRPM() {
+    return "" + lastRPM;
+  }
 	
 }

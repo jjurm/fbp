@@ -5,6 +5,7 @@ import net.talentum.fbp.hardware.button.ButtonEvent;
 import net.talentum.fbp.hardware.button.ButtonState;
 import net.talentum.fbp.hardware.button.ButtonType;
 import net.talentum.fbp.hardware.drivers.DisplayDriver;
+import net.talentum.fbp.hardware.hall.HallSensorDataMonitor;
 import net.talentum.fbp.ui.UIManager;
 
 /**
@@ -49,7 +50,8 @@ public class HomeScreen extends Context {
 	public void renderContext(DisplayDriver display) {
 		// title bar
 		display.clear();
-		display.wline(0, "HomeScreen");
+		display.wline(0, "HomeScreen - FBP");
+		display.wline(1, HallSensorDataMonitor.getRPM() + "RPM");
 	}
 
 }

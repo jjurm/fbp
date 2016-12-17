@@ -40,9 +40,10 @@ public class Main {
 	private static GpioController gpio;
 
 	private static HardwareManager hardwareManager;
-	private static HallSensorDataMonitor hallSensorDataMonitor;
 
 	public static UIManager uiManager;
+
+	private static HallSensorDataMonitor hallSensorDataMonitor;
 
 	private static AtomicBoolean shutdownActionsPerformed = new AtomicBoolean(false);
 
@@ -108,7 +109,7 @@ public class Main {
 		LOG.debug("Setting up devices");
 
 		hallSensorDataMonitor = new HallSensorDataMonitor(dataManager);
-		hallSensorDataMonitor.start();
+		
 		hardwareManager = new HardwareManager(gpio, null, hallSensorDataMonitor);
 
 		// UI
@@ -117,6 +118,7 @@ public class Main {
 		uiManager = new UIManager((DisplayDriver)hardwareManager.getDisplayDriver());
 		uiManager.init();
 		hardwareManager.setButtonEventHandler(uiManager);
+		hallSensorDataMonitor.start();
 
 		LOG.log(Levels.DIAG, "Succesfully started!");
 
