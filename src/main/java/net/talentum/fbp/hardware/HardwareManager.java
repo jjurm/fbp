@@ -22,102 +22,98 @@ import com.pi4j.io.gpio.GpioController;
  */
 public class HardwareManager {
 
-	private static final Logger LOG = LogManager.getLogger();
-	
-	private ButtonDriver buttonDriver;
-	private DisplayDriver displayDriver;
-	private HallSensorDriver hallSensorDriver;
-	private LedDriver ledDriver;
-	private PiezoDriver piezoDriver;
+  private static final Logger LOG = LogManager.getLogger();
 
-	private ButtonEventHandler buttonEventHandler;
-	private HallSensorEventHandler hallSensorEventHandler;
-	private GpioController gpio;
+  private ButtonDriver buttonDriver;
+  private DisplayDriver displayDriver;
+  private HallSensorDriver hallSensorDriver;
+  private LedDriver ledDriver;
+  private PiezoDriver piezoDriver;
 
-	public HardwareManager(GpioController gpio,
-			ButtonEventHandler buttonEventHandler,
-			HallSensorEventHandler hallSensorEventHandler) {
-		this.gpio = gpio;
-		this.buttonEventHandler = buttonEventHandler;
-		this.hallSensorEventHandler = hallSensorEventHandler;
-		constructDrivers();
-	}
+  private ButtonEventHandler buttonEventHandler;
+  private HallSensorEventHandler hallSensorEventHandler;
+  private GpioController gpio;
 
-	/**
-	 * The mathod constructs all the drivers usef in this project and lets use
-	 * of the methods in the Drivers.
-	 */
-	private void constructDrivers() {
-		LOG.debug("Setting up buttons...");
-		buttonDriver = new ButtonDriver(gpio, buttonEventHandler);
-		buttonDriver.addListeners();
-		LOG.debug("ButtonDriver and listeners are set up.");
+  public HardwareManager(GpioController gpio, ButtonEventHandler buttonEventHandler,
+      HallSensorEventHandler hallSensorEventHandler) {
+    this.gpio = gpio;
+    this.buttonEventHandler = buttonEventHandler;
+    this.hallSensorEventHandler = hallSensorEventHandler;
+    constructDrivers();
+  }
 
-		LOG.debug("Setting up DisplayDriver...");
-		displayDriver = new DisplayDriver(gpio, true);
-		LOG.debug("DisplayDriver set up.");
+  /**
+   * The mathod constructs all the drivers usef in this project and lets use of the methods in the
+   * Drivers.
+   */
+  private void constructDrivers() {
+    LOG.debug("Setting up buttons...");
+    buttonDriver = new ButtonDriver(gpio, buttonEventHandler);
+    buttonDriver.addListeners();
+    LOG.debug("ButtonDriver and listeners are set up.");
 
-		LOG.debug("Setting up hall sensor...");
-		hallSensorDriver = new HallSensorDriver(gpio, hallSensorEventHandler);
-		hallSensorDriver.addListener();
-		LOG.debug("HallSensorDriver and listeners are set up.");
+    LOG.debug("Setting up DisplayDriver...");
+    displayDriver = new DisplayDriver(gpio, true);
+    LOG.debug("DisplayDriver set up.");
 
-		LOG.debug("Setting up leds and piezo...");
-		ledDriver = new LedDriver(gpio);
-		piezoDriver = new PiezoDriver(gpio);
-		LOG.debug("LedDriver and PiezoDriver are set up.");
+    LOG.debug("Setting up hall sensor...");
+    hallSensorDriver = new HallSensorDriver(gpio, hallSensorEventHandler);
+    hallSensorDriver.addListener();
+    LOG.debug("HallSensorDriver and listeners are set up.");
 
-	}
+    LOG.debug("Setting up leds and piezo...");
+    ledDriver = new LedDriver(gpio);
+    piezoDriver = new PiezoDriver(gpio);
+    LOG.debug("LedDriver and PiezoDriver are set up.");
 
-	public Driver getButtonDriver() {
-		return this.buttonDriver;
-	}
+  }
 
-	public Driver getDisplayDriver() {
-		return this.displayDriver;
-	}
+  public Driver getButtonDriver() {
+    return this.buttonDriver;
+  }
 
-	public Driver getHallSensorDriver() {
-		return this.hallSensorDriver;
-	}
+  public Driver getDisplayDriver() {
+    return this.displayDriver;
+  }
 
-	public Driver getLedDriver() {
-		return this.ledDriver;
-	}
+  public Driver getHallSensorDriver() {
+    return this.hallSensorDriver;
+  }
 
-	public Driver getPiezoDriver() {
-		return this.piezoDriver;
-	}
+  public Driver getLedDriver() {
+    return this.ledDriver;
+  }
 
-	/**
-	 * Closes the communication with all the drivers and prepares the program
-	 * for exit.
-	 */
-	public void close() {
-		buttonDriver.close();
-		displayDriver.close();
-		hallSensorDriver.close();
-		ledDriver.close();
-		piezoDriver.close();
-	}
+  public Driver getPiezoDriver() {
+    return this.piezoDriver;
+  }
 
-	/**
-	 * Sets the {@link ButtonEventHandler}s in all the Drivers which need it.
-	 *
-	 * @param buttonEventHandler
-	 */
-	public void setButtonEventHandler(ButtonEventHandler buttonEventHandler) {
-		buttonDriver.setButtonEventHandler(buttonEventHandler);
-	}
+  /**
+   * Closes the communication with all the drivers and prepares the program for exit.
+   */
+  public void close() {
+    buttonDriver.close();
+    displayDriver.close();
+    hallSensorDriver.close();
+    ledDriver.close();
+    piezoDriver.close();
+  }
 
-	/**
-	 * Sets the {@link HallSensorEventHandler}s in all the Drivers which need
-	 * it.
-	 * 
-	 * @param hallSensorEventHandler
-	 */
-	public void setHallSensorEventHandler(
-			HallSensorEventHandler hallSensorEventHandler) {
-		hallSensorDriver.setHallSensorEventHandler(hallSensorEventHandler);
-	}
+  /**
+   * Sets the {@link ButtonEventHandler}s in all the Drivers which need it.
+   *
+   * @param buttonEventHandler
+   */
+  public void setButtonEventHandler(ButtonEventHandler buttonEventHandler) {
+    buttonDriver.setButtonEventHandler(buttonEventHandler);
+  }
+
+  /**
+   * Sets the {@link HallSensorEventHandler}s in all the Drivers which need it.
+   * 
+   * @param hallSensorEventHandler
+   */
+  public void setHallSensorEventHandler(HallSensorEventHandler hallSensorEventHandler) {
+    hallSensorDriver.setHallSensorEventHandler(hallSensorEventHandler);
+  }
 }

@@ -123,10 +123,11 @@ public class DataManager {
       LOG.debug("Creating fbp table.");
       // Table does not exist, create
       String query = "CREATE TABLE fbp" +
-          " (id INTEGER AUTO_INCREMENT PRIMARY KEY," +
-          " type VARCHAR(255), " + 
-          " time TIMESTAMP, " + 
-          " value VARCHAR(255))";
+          " (id INTEGER AUTO_INCREMENT," +
+          " type VARCHAR(255)," + 
+          " time TIMESTAMP," + 
+          " value VARCHAR(255)," +
+          " PRIMARY KEY ('id'))";
       
       databaseQuery(query);
     }

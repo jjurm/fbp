@@ -39,6 +39,7 @@ public final class Config {
 	private static int displayRows;
 	
 	private static long dataWriteInterval;
+	private static long RPMUpdateInterval;
 	
 	private static int hallDebounce;
 
@@ -52,6 +53,7 @@ public final class Config {
 		displayRows = config.getInt("hardware/display/rows");
 		
 		dataWriteInterval = config.getLong("fbp/data/dataWriteInterval");
+		RPMUpdateInterval = 5000;
 		
 		hallDebounce = config.getInt("hardware/hall/debounce");
 	}
@@ -83,5 +85,9 @@ public final class Config {
 	public static int getHallDebounce() {
 		return hallDebounce;
 	}
+
+  public static long getRPMUpdateInterval() {
+    return RPMUpdateInterval;
+  }
 
 }

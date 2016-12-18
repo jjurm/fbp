@@ -4,6 +4,7 @@
 		<timezone>Europe/Bratislava</timezone>
 	</system>
 	<data>
+		<RPMUpdateInterval>5000</RPMUpdateInterval>
 		<dataWriteInterval>60000</dataWriteInterval>
 	</data>
 </fbp>
